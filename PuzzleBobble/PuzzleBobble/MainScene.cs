@@ -13,6 +13,7 @@ namespace PuzzleBobble
 
         Texture2D rectTexture;
         Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
+        Texture2D cave;
 
         List<GameObject> gameObjects = new List<GameObject>();
         int numObj;
@@ -43,6 +44,10 @@ namespace PuzzleBobble
             for (int i = 0; i < dataBrick.Length; ++i) dataBrick[i] = Color.White;
             rectTexture.SetData(dataBrick);
 
+            //Import Sprite for GameScreen BG
+            //Reference: https://www.reddit.com/r/PixelArt/comments/61xvdq/ocwipcc_a_parallax_cave_background_i_made/
+            cave = this.Content.Load<Texture2D>("cave");
+
             //Import Sprite of Bobble
             bobble_red = this.Content.Load<Texture2D>("bobble_red");
             bobble_blue = this.Content.Load<Texture2D>("bobble_blue");
@@ -54,7 +59,7 @@ namespace PuzzleBobble
             {
                 for (int j = (i % 2); j < 15; j += 2)
                 {
-                    int jOffset = 5 * i;
+                    int jOffset = 6 * i;
                     if(i < 2){
                         if (j < 4)
                         {
@@ -177,7 +182,7 @@ namespace PuzzleBobble
             spriteBatch.Begin();
 
             //Draw GameScreen
-            spriteBatch.Draw(rectTexture, new Rectangle(new Point((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0), new Point(Singleton.GAMESCREEN_WIDTH, Singleton.GAMESCREEN_HEIGHT)), Color.DarkGray);
+            spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
 
             //Draw GameObject
             for (int i = 0; i < numObj; i++)
