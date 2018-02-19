@@ -20,6 +20,8 @@ namespace PuzzleBobble
         public const int MAINSCREEN_WIDTH = GAMESCREEN_WIDTH * 2;
         public const int MAINSCREEN_HEIGHT = GAMESCREEN_HEIGHT;
 
+        public float shootAngle = 0;
+
         //For Scene Changing
         public enum GameScene
         {
@@ -27,10 +29,10 @@ namespace PuzzleBobble
             MenuScene,      //Menu
             OptionScene,    //Option like difficulty
             GameScene,      //Main Game Scene
-            HistoryScene   //Show Player Statistic on each play
+            HistoryScene    //Show Player Statistic on each play
         }
 
-        public GameScene currentGameScene;
+        public GameScene currentGameScene = GameScene.GameScene;
 
         //For Game Scene State
         public enum GameSceneState
@@ -42,7 +44,7 @@ namespace PuzzleBobble
             End             //Game Over with showing Player Score and otherwise
         }
 
-        public GameSceneState currentGameState;
+        public GameSceneState currentGameState = GameSceneState.Playing;
 
         //For Player Status on Game Scene State
         public enum PlayerStatus

@@ -13,6 +13,7 @@ namespace PuzzleBobble
 
         Texture2D rectTexture;
         Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
+        Texture2D shooter;
         Texture2D cave;
 
         List<GameObject> gameObjects = new List<GameObject>();
@@ -54,106 +55,198 @@ namespace PuzzleBobble
             bobble_green = this.Content.Load<Texture2D>("bobble_green");
             bobble_yellow = this.Content.Load<Texture2D>("bobble_yellow");
 
-            //Initial Bobble Pattern
-            for (int i = 0; i < 4; ++i)
+            //Import Sprite of Shooter
+            shooter = this.Content.Load<Texture2D>("arrow");
+
+            switch (Singleton.Instance.currentGameScene)
             {
-                for (int j = (i % 2); j < 15; j += 2)
-                {
-                    int jOffset = 6 * i;
-                    if(i < 2){
-                        if (j < 4)
+                case Singleton.GameScene.TitleScene:
+                    //TODO: Add Title Graphics, maybe a splash screen
+
+                    break;
+                case Singleton.GameScene.MenuScene:
+                    //TODO: Add 'New Game' Button
+
+                    //TODO: Add 'Option' Button
+
+                    //TODO: Add 'History' Button
+
+                    //TODO: Add 'Exit' Button
+
+                    break;
+                case Singleton.GameScene.OptionScene:
+                    //TODO: Add 'BGM' Button/Slider
+
+                    //TODO: Add 'FX' Button/Slider
+
+                    //TODO: Add 'Skip Tutorial' Checkbox
+
+                    break;
+                case Singleton.GameScene.HistoryScene:
+                    //TODO: Show Game History, like High Score or other Statistical Data
+
+                    break;
+                case Singleton.GameScene.GameScene:
+
+                    //Add Shooter
+                    gameObjects.Add(
+                        new BobbleShooter(shooter)
                         {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_red)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Red
-                                }
-                            );
+                            Name = "Shooter",
+                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50)
                         }
-                        else if (j < 8)
+                    );
+
+                    //Add First Bobble
+                    gameObjects.Add(
+                        new Bobble(bobble_green)
                         {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_yellow)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Yellow
-                                }
-                            );
+                            Name = "Test",
+                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75),
+                            Speed = 500
                         }
-                        else if (j < 12)
+                    );
+
+
+                    //Initial Bobble Pattern
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        for (int j = (i % 2); j < 15; j += 2)
                         {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_blue)
+                            int jOffset = 6 * i;
+                            if (i < 2)
+                            {
+                                if (j < 4)
                                 {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Blue
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_red)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Red
+                                        }
+                                    );
                                 }
-                            );
-                        }
-                        else
-                        {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_green)
+                                else if (j < 8)
                                 {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Green
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_yellow)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Yellow
+                                        }
+                                    );
                                 }
-                            );
+                                else if (j < 12)
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_blue)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Blue
+                                        }
+                                    );
+                                }
+                                else
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_green)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Green
+                                        }
+                                    );
+                                }
+                            }
+                            //Row 3-4
+                            else if (i < 4)
+                            {
+                                if (j < 3)
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_blue)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Blue
+                                        }
+                                    );
+                                }
+                                else if (j < 7)
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_green)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Green
+                                        }
+                                    );
+                                }
+                                else if (j < 11)
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_red)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Red
+                                        }
+                                    );
+                                }
+                                else
+                                {
+                                    gameObjects.Add(
+                                        new NormalBobble(bobble_yellow)
+                                        {
+                                            Name = "NormalBobble",
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Yellow
+                                        }
+                                    );
+                                }
+                            }
                         }
                     }
-                    //Row 3-4
-                    else if(i < 4){
-                        if (j < 3)
-                        {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_blue)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Blue
-                                }
-                            );
-                        }
-                        else if (j < 7)
-                        {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_green)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Green
-                                }
-                            );
-                        }
-                        else if (j < 11)
-                        {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_red)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Red
-                                }
-                            );
-                        }
-                        else
-                        {
-                            gameObjects.Add(
-                                new NormalBobble(bobble_yellow)
-                                {
-                                    Name = "NormalBobble",
-                                    Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                    bobbleColor = NormalBobble.BobbleColor.Yellow
-                                }
-                            );
-                        }
+                    switch (Singleton.Instance.currentGameState)
+                    {
+                        case Singleton.GameSceneState.Tutorial:
+                            //TODO: Logic for 'Skip Tutorial'
+
+                            break;
+                        case Singleton.GameSceneState.Start:
+                            //TODO: Logic on First Move
+
+                            break;
+                        case Singleton.GameSceneState.Playing:
+                            //TODO: Playing Logic on each update
+
+                            break;
+                        case Singleton.GameSceneState.End:
+                            switch (Singleton.Instance.currentPlayerStatus)
+                            {
+                                case Singleton.PlayerStatus.Won:
+                                    //TODO: Showing winning graphics
+                                    break;
+                                case Singleton.PlayerStatus.Lost:
+                                    //TODO: Showing losing graphics
+
+                                    break;
+                            }
+                            //TODO: Showing current score, and submit to statistic data
+
+                            //TODO: Showing high score, in statistic data
+
+                            //TODO: Add 'Play Again' Button
+
+                            //TODO: Add 'Back to Title' Button
+
+                            break;
                     }
-                }
+                    break;
             }
 
 		}
@@ -167,7 +260,84 @@ namespace PuzzleBobble
 				Exit();
 #endif
 
+            numObj = gameObjects.Count;
+
+            for (int i = 0; i < numObj; i++)
+            {
+                if (gameObjects[i].IsActive) gameObjects[i].Update(gameTime, gameObjects);
+            }
+
 			// TODO: Add your update logic here
+            switch(Singleton.Instance.currentGameScene){
+                case Singleton.GameScene.TitleScene:
+                    //TODO: Add Title Graphics, maybe a splash screen
+
+                    //TODO: Sleep for 5 second
+
+                    //Change Scene
+                    Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
+
+                    break;
+                case Singleton.GameScene.MenuScene:
+                    //TODO: Add 'New Game' button logic, move to GameScene
+                    //TODO:Adding some animation for represent the scene transistion
+                    Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
+
+                    //TODO: Add 'Option' Button
+
+                    //TODO: Add 'History' Button
+
+                    //TODO: Add 'Exit' Button
+
+                    break;
+                case Singleton.GameScene.OptionScene:
+                    //TODO: Add 'BGM' Button/Slider
+
+                    //TODO: Add 'FX' Button/Slider
+
+                    //TODO: Add 'Skip Tutorial' Checkbox
+
+                    break;
+                case Singleton.GameScene.HistoryScene:
+                    //TODO: Show Game History, like High Score or other Statistical Data
+
+                    break;
+                case Singleton.GameScene.GameScene:
+                    switch(Singleton.Instance.currentGameState){
+                        case Singleton.GameSceneState.Tutorial:
+                            //TODO: Logic for 'Skip Tutorial'
+
+                            break;
+                        case Singleton.GameSceneState.Start:
+                            //TODO: Logic on First Move
+
+                            break;
+                        case Singleton.GameSceneState.Playing:
+                            //TODO: Playing Logic on each update
+
+                            break;
+                        case Singleton.GameSceneState.End:
+                            switch(Singleton.Instance.currentPlayerStatus){
+                                case Singleton.PlayerStatus.Won:
+                                    //TODO: Showing winning graphics
+                                    break;
+                                case Singleton.PlayerStatus.Lost:
+                                    //TODO: Showing losing graphics
+
+                                    break;
+                            }
+                            //TODO: Showing current score, and submit to statistic data
+
+                            //TODO: Showing high score, in statistic data
+
+                            //TODO: Add 'Play Again' Button
+
+                            //TODO: Add 'Back to Title' Button
+
+                            break;
+                    }
+                    break;
+            }
 
 			base.Update(gameTime);
 		}
@@ -177,7 +347,7 @@ namespace PuzzleBobble
 			graphics.GraphicsDevice.Clear(Color.Black);
 
             numObj = gameObjects.Count;
-
+             
             //TODO: Add your drawing code here
             spriteBatch.Begin();
 
