@@ -18,6 +18,7 @@ namespace PuzzleBobble
         MouseState mouseState, previousMouseState;
         double tileWidth;
         double tileHeight;
+
         public Bobble(Texture2D texture) : base(texture)
         {
             tileWidth = texture.Width;
@@ -32,7 +33,7 @@ namespace PuzzleBobble
             Velocity.X = dt * (float)Math.Cos(MathHelper.ToRadians(Angle)) * Speed;
             Velocity.Y = dt * -1 * (float)Math.Sin(MathHelper.ToRadians(Angle)) * Speed;
             Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing)
             {
                 Angle = (float)Singleton.Instance.shootAngle;
                 dt = 1;

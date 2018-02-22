@@ -46,6 +46,8 @@
     <Compile Include="BobbleShooter.cs" />
     <Compile Include="NormalBobble.cs" />
     <Compile Include="BombBobble.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="SceneManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

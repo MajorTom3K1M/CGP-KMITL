@@ -14,10 +14,20 @@ namespace PuzzleBobble
         Texture2D rectTexture;
         Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
         Texture2D shooter;
-        Texture2D cave;
+        Texture2D cave, splashScreen;
+        Texture2D menuBG, menuParallax, menuTitle;
+        Texture2D buttonNew, buttonOption, buttonExtras, buttonExit;
 
-        List<GameObject> gameObjects = new List<GameObject>();
+        List<GameObject> gameObjects;
         int numObj;
+
+        //Splash Screen Waiting
+        double currentGameTime;
+        bool isFirstTime;
+
+        //Menu Screen Parallax
+        int parallaxHelper;
+        bool isAscend;
 
         public MainScene()
 		{
@@ -32,6 +42,15 @@ namespace PuzzleBobble
             graphics.PreferredBackBufferHeight = Singleton.MAINSCREEN_HEIGHT;
             graphics.ApplyChanges();
 
+            Singleton.Instance.currentGameScene = Singleton.GameScene.TitleScene;
+            Singleton.Instance.currentGameState = Singleton.GameSceneState.None;
+
+            //Splash Screen
+            isFirstTime = true;
+
+            parallaxHelper = 0;
+            isAscend = true;
+
 			base.Initialize();
 		}
 
@@ -40,10 +59,26 @@ namespace PuzzleBobble
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            gameObjects = new List<GameObject>();
+
             rectTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             Color[] dataBrick = new Color[1 * 1];
             for (int i = 0; i < dataBrick.Length; ++i) dataBrick[i] = Color.White;
             rectTexture.SetData(dataBrick);
+
+            //Splash Screen
+            splashScreen = this.Content.Load<Texture2D>("splashScreen");
+
+            //Menu Screen
+            menuBG = this.Content.Load<Texture2D>("menu_bg");
+            menuTitle = this.Content.Load<Texture2D>("menu_title");
+            menuParallax = this.Content.Load<Texture2D>("menu_parallax");
+
+            //Import Option Sprite
+            buttonNew = this.Content.Load<Texture2D>("button_new");
+            buttonOption = this.Content.Load<Texture2D>("button_option");
+            buttonExtras = this.Content.Load<Texture2D>("button_ext");
+            buttonExit = this.Content.Load<Texture2D>("button_exit");
 
             //Import Sprite for GameScreen BG
             //Reference: https://www.reddit.com/r/PixelArt/comments/61xvdq/ocwipcc_a_parallax_cave_background_i_made/
@@ -54,6 +89,9 @@ namespace PuzzleBobble
             bobble_blue = this.Content.Load<Texture2D>("bobble_blue");
             bobble_green = this.Content.Load<Texture2D>("bobble_green");
             bobble_yellow = this.Content.Load<Texture2D>("bobble_yellow");
+
+            //Import GameFont
+            Singleton.Instance.gameFont = this.Content.Load<SpriteFont>("GameFont");
 
             //Import Sprite of Shooter
             shooter = this.Content.Load<Texture2D>("arrow");
@@ -66,12 +104,41 @@ namespace PuzzleBobble
                     break;
                 case Singleton.GameScene.MenuScene:
                     //TODO: Add 'New Game' Button
+                    gameObjects.Add(
+                        new Button(buttonNew)
+                        {
+                            Name = "NewGameButton",
+                            Position = new Vector2(100, 300)
+                        }
+                    );
 
                     //TODO: Add 'Option' Button
+                    gameObjects.Add(
+                        new Button(buttonOption)
+                        {
+                            Name = "OptionButton",
+                            Position = new Vector2(100, 330)
+                        }
+                    );
 
-                    //TODO: Add 'History' Button
+                    //TODO: Add 'Extras' Button
+                    gameObjects.Add(
+                        new Button(buttonExtras)
+                        {
+                            Name = "ExtrasButton",
+                            Position = new Vector2(100, 360)
+                        }
+                    );
 
                     //TODO: Add 'Exit' Button
+                    gameObjects.Add(
+                        new Button(buttonExit)
+                        {
+                            Name = "ExitButton",
+                            Position = new Vector2(100, 450),
+                            ColorHovered = Color.Red
+                        }
+                    );
 
                     break;
                 case Singleton.GameScene.OptionScene:
@@ -99,11 +166,12 @@ namespace PuzzleBobble
 
                     //Add First Bobble
                     gameObjects.Add(
-                        new Bobble(bobble_green)
+                        new NormalBobble(bobble_green)
                         {
                             Name = "Test",
                             Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75),
-                            Speed = 500
+                            Speed = 500,
+                            bobbleColor = NormalBobble.BobbleColor.Green
                         }
                     );
 
@@ -114,6 +182,8 @@ namespace PuzzleBobble
                         for (int j = (i % 2); j < 15; j += 2)
                         {
                             int jOffset = 6 * i;
+                            //int jOffset = 0;
+
                             if (i < 2)
                             {
                                 if (j < 4)
@@ -248,6 +318,7 @@ namespace PuzzleBobble
                     }
                     break;
             }
+            Reset();
 
 		}
 
@@ -260,28 +331,40 @@ namespace PuzzleBobble
 				Exit();
 #endif
 
+            Singleton.GameScene gameScene = Singleton.Instance.currentGameScene;
+
             numObj = gameObjects.Count;
 
             for (int i = 0; i < numObj; i++)
             {
                 if (gameObjects[i].IsActive) gameObjects[i].Update(gameTime, gameObjects);
             }
-
 			// TODO: Add your update logic here
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
-                    //TODO: Add Title Graphics, maybe a splash screen
+                    //TODO: Splash Screen
 
-                    //TODO: Sleep for 5 second
+                    //TODO: Sleep for 7 seconds
+                    if (isFirstTime){
+                        currentGameTime = gameTime.TotalGameTime.TotalSeconds;
+                        isFirstTime = false;
 
-                    //Change Scene
-                    Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
+                        //DEBUG LOG
+                        //Console.WriteLine("ENTER >> " + currentGameTime);
+                    } 
+
+                    //DEBUG LOG
+                    //Console.WriteLine(gameTime.TotalGameTime.TotalSeconds - currentGameTime);
+
+                    if (gameTime.TotalGameTime.TotalSeconds - currentGameTime >= Singleton.SPLASH_TIME){
+                        //Change Scene
+                        Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
+                    }
 
                     break;
                 case Singleton.GameScene.MenuScene:
                     //TODO: Add 'New Game' button logic, move to GameScene
-                    //TODO:Adding some animation for represent the scene transistion
-                    Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
+                    //TODO: Adding some animation for represent the scene transistion
 
                     //TODO: Add 'Option' Button
 
@@ -339,6 +422,8 @@ namespace PuzzleBobble
                     break;
             }
 
+            if (gameScene != Singleton.Instance.currentGameScene) LoadContent();
+
 			base.Update(gameTime);
 		}
 
@@ -352,7 +437,35 @@ namespace PuzzleBobble
             spriteBatch.Begin();
 
             //Draw GameScreen
-            spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
+            switch(Singleton.Instance.currentGameScene){
+                case Singleton.GameScene.TitleScene:
+                    //TODO: Draw Splash Screen
+                    spriteBatch.Draw(splashScreen, Vector2.Zero, Color.White);
+
+                    break;
+                case Singleton.GameScene.MenuScene:
+                    spriteBatch.Draw(menuBG, Vector2.Zero, Color.White);
+
+                    //Parallax Function
+                    if(parallaxHelper > 250) isAscend = false;
+                    else if(parallaxHelper < 1) isAscend = true;
+                    
+                    if (gameTime.TotalGameTime.Milliseconds % 1 == 0){
+                        if(isAscend) parallaxHelper++;
+                        else parallaxHelper--;
+                    } 
+                    spriteBatch.Draw(menuParallax, Vector2.Zero, new Color(Color.White, parallaxHelper));
+
+                    spriteBatch.Draw(menuTitle, Vector2.Zero, Color.White);
+
+                    //Button Showing
+
+
+                    break;
+                case Singleton.GameScene.GameScene:
+                    spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
+                    break;
+            }
 
             //Draw GameObject
             for (int i = 0; i < numObj; i++)

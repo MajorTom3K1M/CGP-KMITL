@@ -11,6 +11,7 @@ namespace PuzzleBobble
 {
     public class BombBobble : Bobble
     {
+
         public BombBobble(Texture2D texture) : base(texture)
         {
 
