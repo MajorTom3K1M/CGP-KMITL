@@ -31,6 +31,10 @@ namespace PuzzleBobble
                         case "NewGameButton":
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             break;
+                        case "ExitButton":
+                            //Game Exit
+                            new MainScene().Exit();
+                            break;
                     }
                 }
             }
