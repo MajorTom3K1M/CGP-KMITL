@@ -177,7 +177,7 @@ namespace PuzzleBobble
                     {
                         for (int j = (i % 2); j < 15; j += 2)
                         {
-                            int jOffset = 6 * i;
+                            int iOffset = 6 * i;
                             //int jOffset = 0;
 
                             if (i < 2)
@@ -188,8 +188,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_red)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Red
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Red,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -199,8 +200,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_yellow)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Yellow
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Yellow,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -210,8 +212,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_blue)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Blue
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Blue,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -221,8 +224,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_green)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Green
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Green,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -236,8 +240,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_blue)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Blue
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Blue,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -247,8 +252,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_green)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Green
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Green,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -258,8 +264,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_red)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Red
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Red,
+                                            isInitialized = true
                                         }
                                     );
                                 }
@@ -269,8 +276,9 @@ namespace PuzzleBobble
                                         new NormalBobble(bobble_yellow)
                                         {
                                             Name = "NormalBobble",
-                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - jOffset),
-                                            bobbleColor = NormalBobble.BobbleColor.Yellow
+                                            Position = new Vector2(j * Singleton.BOBBLE_SIZE / 2 + 200, i * Singleton.BOBBLE_SIZE - iOffset),
+                                            bobbleColor = NormalBobble.BobbleColor.Yellow,
+                                            isInitialized = true
                                         }
                                     );
                                 }

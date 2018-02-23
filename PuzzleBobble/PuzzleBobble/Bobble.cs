@@ -12,7 +12,6 @@ namespace PuzzleBobble
 {
     public class Bobble : GameObject
     {
-
         public Bobble(Texture2D texture) : base(texture)
         {
 

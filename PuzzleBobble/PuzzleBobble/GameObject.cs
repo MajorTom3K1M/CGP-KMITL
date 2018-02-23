@@ -25,6 +25,8 @@ namespace PuzzleBobble
         public string Name;
 
         public bool IsActive;
+        public bool IsVisited;
+        public bool IsWaited;
 
         public Rectangle Rectangle
         {
