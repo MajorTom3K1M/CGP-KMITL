@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace PuzzleBobble
 {
-    public class GameObject
+    public class GameObject : ICloneable
     {
         protected Texture2D _texture;
 
         public float tileWidth;
         public float tileHeight;
-        public float tileRadius = (Singleton.BOBBLE_SIZE/2)-1; 
+
+        public NormalBobble.BobbleColor bobbleColor;
+
+        public float tileRadius = (Singleton.BOBBLE_SIZE / 2) - 1;
 
         public Vector2 Position;
         public float Rotation;
@@ -42,6 +41,8 @@ namespace PuzzleBobble
             Scale = Vector2.One;
             Rotation = 0f;
             IsActive = true;
+            tileWidth = texture.Width;
+            tileHeight = texture.Height;
         }
 
         public virtual void Update(GameTime gameTime, List<GameObject> gameObjects)
@@ -117,5 +118,6 @@ namespace PuzzleBobble
         {
             throw new NotImplementedException();
         }
+
     }
 }

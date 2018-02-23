@@ -11,8 +11,8 @@ namespace PuzzleBobble
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+        public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
         Texture2D rectTexture;
-        Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
         Texture2D shooter;
         Texture2D cave, splashScreen;
         Texture2D menuBG, menuParallax, menuTitle;
@@ -20,6 +20,14 @@ namespace PuzzleBobble
 
         List<GameObject> gameObjects;
         int numObj;
+
+        Queue<GameObject> q = new Queue<GameObject>();
+
+        Random rnd = new Random();
+
+        MouseState previousMouseState, mouseState;
+
+        BobbleShooter bobbleShooter;
 
         //Splash Screen Waiting
         double currentGameTime;
@@ -161,7 +169,6 @@ namespace PuzzleBobble
                         {
                             Name = "Shooter",
                             Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
-                            normalBobble = new NormalBobble(bobble_green)
                         }
                     );
 
@@ -378,10 +385,12 @@ namespace PuzzleBobble
                     switch(Singleton.Instance.currentGameState){
                         case Singleton.GameSceneState.Tutorial:
                             //TODO: Logic for 'Skip Tutorial'
+                            Singleton.Instance.currentGameState = Singleton.GameSceneState.Start;
 
                             break;
                         case Singleton.GameSceneState.Start:
-                            //TODO: Logic on First Move
+                            //TODO: Logic on Each Move
+                            Singleton.Instance.currentGameState = Singleton.GameSceneState.Playing;
 
                             break;
                         case Singleton.GameSceneState.Playing:
@@ -411,7 +420,10 @@ namespace PuzzleBobble
                     break;
             }
 
-            if (gameScene != Singleton.Instance.currentGameScene) LoadContent();
+            if (gameScene != Singleton.Instance.currentGameScene){
+                Console.WriteLine("Load Content");
+                LoadContent();
+            } 
 
 			base.Update(gameTime);
 		}
@@ -447,7 +459,6 @@ namespace PuzzleBobble
                     spriteBatch.Draw(menuTitle, Vector2.Zero, Color.White);
 
                     //Button Showing
-
 
                     break;
                 case Singleton.GameScene.GameScene:

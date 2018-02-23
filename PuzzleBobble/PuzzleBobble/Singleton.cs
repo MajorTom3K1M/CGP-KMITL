@@ -35,12 +35,12 @@ namespace PuzzleBobble
         {
             None,           //Not on GameScene
             Tutorial,       //Show Tutorial Box (Skip or no; can be adjusted in Option menu)
-            Start,          //First State on Game after Tutorial Box
+            Start,   //First State on Game after Tutorial Box
             Playing,        //Playing State
             End             //Game Over with showing Player Score and otherwise
         }
 
-        public GameSceneState currentGameState = GameSceneState.None; //For a moment
+        public GameSceneState currentGameState;
 
         //For Player Status on Game Scene State
         public enum PlayerStatus

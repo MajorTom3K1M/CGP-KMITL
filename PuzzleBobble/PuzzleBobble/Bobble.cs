@@ -27,7 +27,6 @@ namespace PuzzleBobble
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, Position, Color.White);
-
             base.Draw(spriteBatch);
         }
 
