@@ -136,7 +136,7 @@ namespace PuzzleBobble
                         {
                             Name = "ExitButton",
                             Position = new Vector2(100, 450),
-                            ColorHovered = Color.Red
+                            ColorHovered = Color.DarkRed
                         }
                     );
 
@@ -160,21 +160,10 @@ namespace PuzzleBobble
                         new BobbleShooter(shooter)
                         {
                             Name = "Shooter",
-                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50)
+                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
+                            normalBobble = new NormalBobble(bobble_green)
                         }
                     );
-
-                    //Add First Bobble
-                    gameObjects.Add(
-                        new NormalBobble(bobble_green)
-                        {
-                            Name = "Test",
-                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75),
-                            Speed = 500,
-                            bobbleColor = NormalBobble.BobbleColor.Green
-                        }
-                    );
-
 
                     //Initial Bobble Pattern
                     for (int i = 0; i < 4; ++i)
@@ -440,8 +429,7 @@ namespace PuzzleBobble
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
                     //TODO: Draw Splash Screen
-                    spriteBatch.Draw(splashScreen, Vector2.Zero, Color.White);
-
+                    spriteBatch.Draw(splashScreen, Vector2.Zero, new Color(Color.White, parallaxHelper));
                     break;
                 case Singleton.GameScene.MenuScene:
                     spriteBatch.Draw(menuBG, Vector2.Zero, Color.White);
