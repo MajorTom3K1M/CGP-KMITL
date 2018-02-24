@@ -16,8 +16,6 @@ namespace PuzzleBobble
 
         public const float SPLASH_TIME = 7f;
 
-        public float shootAngle = 0;
-
         //For Scene Changing
         public enum GameScene
         {

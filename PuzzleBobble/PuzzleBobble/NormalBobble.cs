@@ -8,13 +8,8 @@ namespace PuzzleBobble
 {
     public class NormalBobble : Bobble
     {
-
         MouseState mouseState, previousMouseState;
-        public float Speed;
-        public float Angle;
-        public bool isNeverShoot = true;
         public enum BobbleColor { Red, Green, Blue, Yellow }
-        public bool isInitialized;
 
         public NormalBobble(Texture2D texture) : base(texture)
         {
@@ -66,9 +61,10 @@ namespace PuzzleBobble
                     }
 
                     Position = new Vector2(xGrid, yGrid);
+                    Velocity = Vector2.Zero;
                     isNeverShoot = false;
 
-                    //Console.WriteLine("Shooter >> " + ((xGrid - 200) / (Singleton.BOBBLE_SIZE / 2)) + " " + yGrid / 44);
+                    //Console.WriteLine("Shooter >> " + Velocity);
                 }
             }
 

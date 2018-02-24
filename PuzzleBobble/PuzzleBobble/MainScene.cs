@@ -13,8 +13,11 @@ namespace PuzzleBobble
 
         public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
         Texture2D rectTexture;
-        Texture2D shooter;
+
+        Texture2D shooter, loseCollider;
+
         Texture2D cave, splashScreen;
+
         Texture2D menuBG, menuParallax, menuTitle;
         Texture2D buttonNew, buttonOption, buttonExtras, buttonExit;
 
@@ -24,10 +27,6 @@ namespace PuzzleBobble
         Queue<GameObject> q = new Queue<GameObject>();
 
         Random rnd = new Random();
-
-        MouseState previousMouseState, mouseState;
-
-        BobbleShooter bobbleShooter;
 
         //Splash Screen Waiting
         double currentGameTime;
@@ -53,6 +52,7 @@ namespace PuzzleBobble
             Singleton.Instance.currentGameScene = Singleton.GameScene.TitleScene;
             Singleton.Instance.currentGameState = Singleton.GameSceneState.None;
 
+
             //Splash Screen
             isFirstTime = true;
 
@@ -66,13 +66,12 @@ namespace PuzzleBobble
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-
             gameObjects = new List<GameObject>();
-
             rectTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
-            Color[] dataBrick = new Color[1 * 1];
-            for (int i = 0; i < dataBrick.Length; ++i) dataBrick[i] = Color.White;
-            rectTexture.SetData(dataBrick);
+
+            Color[] dataRect = new Color[1 * 1];
+            for (int i = 0; i < dataRect.Length; ++i) dataRect[i] = Color.White;
+            rectTexture.SetData(dataRect);
 
             //Splash Screen
             splashScreen = this.Content.Load<Texture2D>("splashScreen");
@@ -103,6 +102,7 @@ namespace PuzzleBobble
 
             //Import Sprite of Shooter
             shooter = this.Content.Load<Texture2D>("arrow");
+            loseCollider = this.Content.Load<Texture2D>("lose_collider");
 
             switch (Singleton.Instance.currentGameScene)
             {
@@ -168,12 +168,21 @@ namespace PuzzleBobble
                         new BobbleShooter(shooter)
                         {
                             Name = "Shooter",
-                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
+                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50)
+                        }
+                    );
+
+                    //Add Lose Collider
+                    gameObjects.Add(
+                        new LoseCollider(loseCollider)
+                        {
+                            Name = "LoseCollider",
+                            Position = new Vector2(200, 500)
                         }
                     );
 
                     //Initial Bobble Pattern
-                    for (int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 4; ++i)
                     {
                         for (int j = (i % 2); j < 15; j += 2)
                         {

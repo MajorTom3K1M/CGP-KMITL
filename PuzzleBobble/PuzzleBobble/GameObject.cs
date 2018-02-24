@@ -12,13 +12,13 @@ namespace PuzzleBobble
         public float tileWidth;
         public float tileHeight;
 
-        public NormalBobble.BobbleColor bobbleColor;
-
         public float tileRadius = (Singleton.BOBBLE_SIZE / 2) - 1;
 
         public Vector2 Position;
         public float Rotation;
         public Vector2 Scale;
+
+        public NormalBobble.BobbleColor bobbleColor;
 
         public Vector2 Velocity;
 
@@ -92,6 +92,14 @@ namespace PuzzleBobble
                     this.Rectangle.Left < gameObject.Rectangle.Right &&
                     this.Rectangle.Bottom > gameObject.Rectangle.Bottom &&
                     this.Rectangle.Top < gameObject.Rectangle.Bottom;
+        }
+
+        protected bool IsTriggered(GameObject gameObject){
+            bool isTriggered = false;
+            for (int i = 0; i <= tileHeight; ++i){
+                isTriggered |= Position.Y + i >= gameObject.Position.Y && Position.Y + i <= gameObject.Position.Y + gameObject.tileHeight;
+            }  
+            return isTriggered;
         }
 
         public bool circleCollide(GameObject g2)

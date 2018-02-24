@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace PuzzleBobble
 {
-    public class Bobble : GameObject
+    public class LoseCollider : GameObject
     {
-        public float Speed;
-        public float Angle;
-        public bool isNeverShoot = true;
-        public bool isInitialized;
-
-        public Bobble(Texture2D texture) : base(texture)
+        public LoseCollider(Texture2D texture) : base(texture)
         {
 
         }
 
         public override void Update(GameTime gameTime, List<GameObject> gameObjects)
         {
-
+            foreach(GameObject g in gameObjects){
+                if(g.Name.Equals("NormalBobble") && g.IsActive && IsTriggered(g) && g.Velocity == Vector2.Zero){
+                    Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.Lost;
+                }
+            }
             base.Update(gameTime, gameObjects);
         }
 
