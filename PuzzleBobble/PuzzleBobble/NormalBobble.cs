@@ -36,16 +36,39 @@ namespace PuzzleBobble
                     this.Speed = 0;
                     if (j == 1) xGrid = j * (Singleton.BOBBLE_SIZE / 2) + (int)(Math.Floor((Position.X) / 50)) * 50;
                     if (Position.Equals(g.Position)) xGrid -= 50;
-                    if (j >= 15)
+
+                    if ((xGrid - 200) / (Singleton.BOBBLE_SIZE / 2) >= 15)
                     {
-                        yGrid += 44;
-                        xGrid = 13 * (Singleton.BOBBLE_SIZE / 2) + (int)Math.Round(Position.X / 50) * 50;
+                        bool hasLeft, hasDown;
+                        hasLeft = hasDown = false;
+
+                        int v = (int) (this.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
+                        int w = (int) this.Position.Y / 44;
+
+                        foreach(GameObject obj in gameObjects){
+                            if (g.Name.Equals("NormalBobble") && g.IsActive)
+                            {
+                                int x = (int)(g.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
+                                int y = (int)g.Position.Y / 44;
+
+                                if (v - 2 == x) hasLeft = true;
+                                hasDown |= (v - 1 == x && w + 1 == y);
+                            }
+                        }
+
+                        if(!hasLeft) xGrid = 13 * (Singleton.BOBBLE_SIZE / 2) + 200;
+                        else if(!hasDown){
+                            xGrid = 14 * (Singleton.BOBBLE_SIZE / 2) + 200;
+                            yGrid += 44;
+                        } 
+
+                        //Console.WriteLine("Has Left : Has Down >> " + hasLeft + " : " + hasDown);
                     }
 
                     Position = new Vector2(xGrid, yGrid);
                     isNeverShoot = false;
 
-                    //Console.WriteLine("Shooter >> " + xGrid + " " + yGrid);
+                    //Console.WriteLine("Shooter >> " + ((xGrid - 200) / (Singleton.BOBBLE_SIZE / 2)) + " " + yGrid / 44);
                 }
             }
 
