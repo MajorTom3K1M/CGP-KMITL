@@ -173,7 +173,7 @@ namespace PuzzleBobble
                     );
 
                     //Initial Bobble Pattern
-                    for (int i = 0; i < 4; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         for (int j = (i % 2); j < 15; j += 2)
                         {

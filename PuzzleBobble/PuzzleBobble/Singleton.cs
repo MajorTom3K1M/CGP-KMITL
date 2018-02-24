@@ -14,7 +14,7 @@ namespace PuzzleBobble
         public const int MAINSCREEN_WIDTH = GAMESCREEN_WIDTH * 2;
         public const int MAINSCREEN_HEIGHT = GAMESCREEN_HEIGHT;
 
-        public const float SPLASH_TIME = 5f;
+        public const float SPLASH_TIME = 7f;
 
         public float shootAngle = 0;
 

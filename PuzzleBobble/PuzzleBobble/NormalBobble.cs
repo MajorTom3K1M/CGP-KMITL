@@ -26,25 +26,26 @@ namespace PuzzleBobble
             int s = gameObjects.Count;
             GameObject a = gameObjects[s - 2];
             int j = (int)Math.Round(Position.Y / 44) % 2;
-            float yGrid = (float)Math.Round(Position.Y / 44) * 44;
-            float xGrid = j * (Singleton.BOBBLE_SIZE / 2) + (float)Math.Round(Position.X / 50) * 50;
+            int yGrid = (int) Math.Round(Position.Y / 44) * 44;
+            int xGrid = j * (Singleton.BOBBLE_SIZE / 2) + (int) Math.Round(Position.X / 50) * 50;
+
             foreach (GameObject g in gameObjects)
             {
                 if (!g.Equals(this) && g.Name.Equals("NormalBobble") && this.circleCollide(g) && isNeverShoot && g.IsActive)
                 {
                     this.Speed = 0;
-                    isNeverShoot = false;
-                    if (j == 1)
+                    if (j == 1) xGrid = j * (Singleton.BOBBLE_SIZE / 2) + (int)(Math.Floor((Position.X) / 50)) * 50;
+                    if (Position.Equals(g.Position)) xGrid -= 50;
+                    if (j >= 15)
                     {
-                        xGrid = j * (Singleton.BOBBLE_SIZE / 2) + (float)(Math.Floor((Position.X) / 50)) * 50;
+                        yGrid += 44;
+                        xGrid = 13 * (Singleton.BOBBLE_SIZE / 2) + (int)Math.Round(Position.X / 50) * 50;
                     }
-                    Position = new Vector2(xGrid, yGrid);
 
-                    if (Position.Equals(g.Position))
-                    {
-                        xGrid -= 50;
-                        Position = new Vector2(xGrid, yGrid);
-                    }
+                    Position = new Vector2(xGrid, yGrid);
+                    isNeverShoot = false;
+
+                    //Console.WriteLine("Shooter >> " + xGrid + " " + yGrid);
                 }
             }
 
@@ -58,16 +59,21 @@ namespace PuzzleBobble
             if (Position.X <= 200) Angle = 180 - Angle;
             if (Position.X >= 550) Angle = 180 - Angle;
 
-            if (Position.Y < 0)
+            if (Position.Y < 0 && isNeverShoot)
             {
                 Speed = 0;
-                xGrid = (float)Math.Round(Position.X / 50) * 50;
-                yGrid = (float)Math.Round(Position.Y / 44);
+                xGrid = (int) Math.Round(Position.X / 50) * 50;
+                yGrid = (int) Math.Round(Position.Y / 44);
                 Position = new Vector2(j * (Singleton.BOBBLE_SIZE / 2) + xGrid, yGrid * 44);
+
+                isNeverShoot = false;
+
+                //Console.WriteLine("Shooter >> " + xGrid + " " + yGrid);
             }
 
             //Check if still and not an initialized one
-            if(Velocity == Vector2.Zero && !isInitialized && !isNeverShoot){
+            if (Velocity == Vector2.Zero && !isInitialized && !isNeverShoot)
+            {
                 destroyCluster(gameObjects, this);
                 isInitialized = true;
             }
@@ -171,8 +177,8 @@ namespace PuzzleBobble
         {
             resetVisited(gameObjects);
 
-            //Console.WriteLine(findCluster(gameObjects, current));
-            //resetVisited(gameObjects);
+            Console.WriteLine(findCluster(gameObjects, current));
+            resetVisited(gameObjects);
 
             if (findCluster(gameObjects, current) >= 3)
             {
@@ -229,6 +235,7 @@ namespace PuzzleBobble
 
                         if (isChecked)
                         {
+                            Console.WriteLine("Trigger >> " + x + " " + y);
                             q.Enqueue(g);
                             g.IsVisited = true;
                             count++;
