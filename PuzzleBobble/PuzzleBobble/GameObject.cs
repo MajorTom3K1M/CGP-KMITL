@@ -94,6 +94,7 @@ namespace PuzzleBobble
                     this.Rectangle.Top < gameObject.Rectangle.Bottom;
         }
 
+        //Trigger into Collider
         protected bool IsTriggered(GameObject gameObject){
             bool isTriggered = false;
             for (int i = 0; i <= tileHeight; ++i){
@@ -102,6 +103,7 @@ namespace PuzzleBobble
             return isTriggered;
         }
 
+        //Collide into Circle Collider
         public bool circleCollide(GameObject g2)
         {
             double g1CenterX = this.Position.X + this.tileWidth / 2;
@@ -115,10 +117,7 @@ namespace PuzzleBobble
 
             double length = Math.Sqrt(dx * dx + dy * dy);
 
-            if (length < tileRadius + g2.tileRadius)
-            {
-                return true;
-            }
+            if (length < tileRadius + g2.tileRadius) return true;
 
             return false;
         }
@@ -126,7 +125,7 @@ namespace PuzzleBobble
 
         public object Clone()
         {
-            throw new NotImplementedException();
+            return this.MemberwiseClone();
         }
 
     }

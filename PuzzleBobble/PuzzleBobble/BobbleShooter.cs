@@ -8,9 +8,7 @@ namespace PuzzleBobble
 {
     public class BobbleShooter : GameObject
     {
-
-        public NormalBobble normalBobble;
-        NormalBobble bobble;
+        NormalBobble bobble_primary, bobble_secondary;
 
         Point mousePosition;
         MouseState mouseClickedState, previousMouseState, mouseState;
@@ -58,22 +56,29 @@ namespace PuzzleBobble
                 {
                     case shooterState.shooterReload:
                         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
                         if (timer > 1)
                         {
                             Random rand = new Random();
                             int rnd = rand.Next(0, 4);
 
-                            bobble = new NormalBobble(color[rnd]);
-                            bobble.bobbleColor = normalBobbleColor[rnd];
-                            bobble.Name = "NormalBobble";
-                            bobble.Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75);
+                            bobble_primary = new NormalBobble(color[rnd])
+                            {
+                                Name = "NormalBobble",
+                                bobbleColor = normalBobbleColor[rnd],
+                                Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                            };
 
-                            gameObjects.Add(bobble);
+                            gameObjects.Add(bobble_primary);
+
+                            //TODO: Create Secondary Bobble for Swaping
 
                             timer = 0;
+
                             currentShooterState = shooterState.shooterReady;
                         }
                         break;
+
                     case shooterState.shooterReady:
                         previousMouseState = mouseClickedState;
                         mouseClickedState = Mouse.GetState();
@@ -84,10 +89,14 @@ namespace PuzzleBobble
 
                         if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
                         {
-                            bobble.Angle = (float)mouseAngle;
-                            bobble.Speed = 700;
+                            ShootBobble();
                             currentShooterState = shooterState.shooterReload;
                         }
+                        else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None){
+                            //TODO: Call SwapBobble Function
+                            SwapBobble();
+                        }
+
                         break;
                 }
             }
@@ -95,9 +104,14 @@ namespace PuzzleBobble
             base.Update(gameTime, gameObjects);
         }
 
+        private void ShootBobble(){
+            bobble_primary.Angle = (float) mouseAngle;
+            bobble_primary.Speed = 700;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, null, Color.White, (float)MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(_texture, Position, null, Color.White, (float) MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 1f);
             base.Draw(spriteBatch);
         }
 
@@ -105,6 +119,10 @@ namespace PuzzleBobble
         {
             this.IsActive = true;
             base.Reset();
+        }
+
+        protected void SwapBobble(){
+            //TODO: Swapping Function when Right-click
         }
     }
 }

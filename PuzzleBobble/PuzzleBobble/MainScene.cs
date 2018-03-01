@@ -151,6 +151,13 @@ namespace PuzzleBobble
                     break;
                 case Singleton.GameScene.OptionScene:
                     //TODO: Add 'BGM' Button/Slider
+                    gameObjects.Add(
+                        new Button(buttonExtras)
+                        {
+                            Name = "BGMButton",
+                            Position = new Vector2(100, 360)
+                        }
+                    );
 
                     //TODO: Add 'FX' Button/Slider
 
@@ -412,6 +419,17 @@ namespace PuzzleBobble
                             break;
                         case Singleton.GameSceneState.Playing:
                             //TODO: Playing Logic on each update
+                            int count = 0;
+
+                            foreach(GameObject g in gameObjects){
+                                if(g.Name.Equals("NormalBobble") && g.Position.Y == 0f && g.IsActive) count++;
+                            }
+
+                            if (count == 0){
+                                Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.Won;
+                                Singleton.Instance.currentGameState = Singleton.GameSceneState.End;
+                            } 
+
 
                             break;
                         case Singleton.GameSceneState.End:
@@ -465,7 +483,7 @@ namespace PuzzleBobble
 
                     //Parallax Function
                     if(parallaxHelper > 250) isAscend = false;
-                    else if(parallaxHelper < 1) isAscend = true;
+                    else isAscend |= parallaxHelper < 1;
                     
                     if (gameTime.TotalGameTime.Milliseconds % 1 == 0){
                         if(isAscend) parallaxHelper++;
@@ -480,6 +498,21 @@ namespace PuzzleBobble
                     break;
                 case Singleton.GameScene.GameScene:
                     spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
+
+                    switch(Singleton.Instance.currentGameState){
+                        case Singleton.GameSceneState.End:
+                            switch(Singleton.Instance.currentPlayerStatus){
+                                case Singleton.PlayerStatus.Won:
+                                    //TODO: Show Win Window
+
+                                    break;
+                                case Singleton.PlayerStatus.Lost:
+                                    //TODO: Show Lose Window
+
+                                    break;
+                            }
+                            break;
+                    }
                     break;
             }
 

@@ -17,6 +17,7 @@ namespace PuzzleBobble
             foreach(GameObject g in gameObjects){
                 if(g.Name.Equals("NormalBobble") && g.IsActive && IsTriggered(g) && g.Velocity == Vector2.Zero){
                     Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.Lost;
+                    Singleton.Instance.currentGameState = Singleton.GameSceneState.End;
                 }
             }
             base.Update(gameTime, gameObjects);
