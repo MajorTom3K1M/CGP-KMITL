@@ -49,6 +49,8 @@
     <Compile Include="Button.cs" />
     <Compile Include="SceneManager.cs" />
     <Compile Include="LoseCollider.cs" />
+    <Compile Include="ScoreDisplayer.cs" />
+    <Compile Include="Celling.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

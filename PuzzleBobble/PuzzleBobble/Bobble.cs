@@ -14,7 +14,7 @@ namespace PuzzleBobble
         public bool isInitialized;
 
         MouseState mouseState, previousMouseState;
-        public enum BobbleColor { Red, Green, Blue, Yellow }
+        public enum BobbleColor { Red, Green, Blue, Yellow, White, Turquoise, Purple, Orange }
 
         public Bobble(Texture2D texture) : base(texture)
         {
@@ -64,7 +64,6 @@ namespace PuzzleBobble
                             yGrid += 44;
                         }
                     }
-
                     Position = new Vector2(xGrid, yGrid);
                     Velocity = Vector2.Zero;
                     isNeverShoot = false;
@@ -81,7 +80,7 @@ namespace PuzzleBobble
             if (Position.X <= 200) Angle = 180 - Angle;
             if (Position.X >= 550) Angle = 180 - Angle;
 
-            if (Position.Y < 0 && isNeverShoot)
+            if (Position.Y < (Singleton.Instance.cellingLevel * 44) && isNeverShoot)
             {
                 Speed = 0;
                 xGrid = (int)Math.Round(Position.X / 50) * 50;
@@ -142,7 +141,7 @@ namespace PuzzleBobble
             foreach (GameObject g in gameObjects)
             {
                 int y = (int)g.Position.Y / 44;
-                if (g.Name == "NormalBobble" && g.IsActive && !g.IsWaited && y != 0) g.IsActive = false;
+                if (g.Name == "NormalBobble" && g.IsActive && !g.IsWaited && y != (Singleton.Instance.cellingLevel * 44)) g.IsActive = false;
             }
 
             ResetWaited(gameObjects);
@@ -187,7 +186,7 @@ namespace PuzzleBobble
                             s.Push(g);
                             g.IsVisited = true;
 
-                            if (y == 0) return true;
+                            if (y == Singleton.Instance.cellingLevel) return true;
                         }
                     }
                 }
@@ -203,11 +202,16 @@ namespace PuzzleBobble
             Console.WriteLine(findCluster(gameObjects, current));
             ResetVisited(gameObjects);
 
+            int indicator = 1;
+
             if (findCluster(gameObjects, current) >= 3)
             {
                 foreach (GameObject g in gameObjects)
                 {
-                    if (g.Name == "NormalBobble" && g.IsActive && g.IsVisited) g.IsActive = false;
+                    if (g.Name == "NormalBobble" && g.IsActive && g.IsVisited){
+                        g.IsActive = false;
+                        Singleton.Instance.score += 100 * indicator++;
+                    } 
                 }
             }
 

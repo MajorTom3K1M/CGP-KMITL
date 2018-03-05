@@ -16,6 +16,8 @@ namespace PuzzleBobble
         public float Angle;
         public double mouseAngle;
 
+        public Texture2D body;
+
         Queue<GameObject> q = new Queue<GameObject>();
 
         private float timer;
@@ -28,9 +30,9 @@ namespace PuzzleBobble
 
         private shooterState currentShooterState;
 
-        Texture2D[] color = { MainScene.bobble_red, MainScene.bobble_blue, MainScene.bobble_green, MainScene.bobble_yellow };
+        Texture2D[] color = { MainScene.bobble_red, MainScene.bobble_blue, MainScene.bobble_green, MainScene.bobble_yellow, MainScene.bobble_white, MainScene.bobble_turquoise, MainScene.bobble_purple, MainScene.bobble_orange };
         NormalBobble.BobbleColor[] normalBobbleColor = { NormalBobble.BobbleColor.Red, NormalBobble.BobbleColor.Blue,
-                                                                NormalBobble.BobbleColor.Green, NormalBobble.BobbleColor.Yellow };
+            NormalBobble.BobbleColor.Green, NormalBobble.BobbleColor.Yellow, NormalBobble.BobbleColor.Purple, NormalBobble.BobbleColor.Orange, NormalBobble.BobbleColor.White, NormalBobble.BobbleColor.Turquoise };
 
         public BobbleShooter(Texture2D texture) : base(texture)
         {
@@ -60,7 +62,7 @@ namespace PuzzleBobble
                         if (timer > 1)
                         {
                             Random rand = new Random();
-                            int rnd = rand.Next(0, 4);
+                            int rnd = rand.Next(0, 8);
 
                             bobble_primary = new NormalBobble(color[rnd])
                             {
@@ -111,7 +113,8 @@ namespace PuzzleBobble
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, null, Color.White, (float) MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(body, Position, null, Color.White, 0f, new Vector2(body.Width / 2, body.Height / 2), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(_texture, Position, null, Color.White, (float)MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 1f);
             base.Draw(spriteBatch);
         }
 

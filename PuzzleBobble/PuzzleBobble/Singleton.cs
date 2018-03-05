@@ -50,6 +50,10 @@ namespace PuzzleBobble
 
         public PlayerStatus currentPlayerStatus;
 
+        public int score;
+        public int cellingLevel = 0;
+        public int cellingTime = 20;
+
         public SpriteFont gameFont;
 
         private static Singleton instance;

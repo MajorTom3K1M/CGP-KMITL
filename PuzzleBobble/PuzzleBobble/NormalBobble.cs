@@ -34,6 +34,18 @@ namespace PuzzleBobble
                 case BobbleColor.Yellow:
                     spriteBatch.Draw(MainScene.bobble_yellow, Position, Color.White);
                     break;
+                case BobbleColor.Orange:
+                    spriteBatch.Draw(MainScene.bobble_orange, Position, Color.White);
+                    break;
+                case BobbleColor.White:
+                    spriteBatch.Draw(MainScene.bobble_white, Position, Color.White);
+                    break;
+                case BobbleColor.Purple:
+                    spriteBatch.Draw(MainScene.bobble_purple, Position, Color.White);
+                    break;
+                case BobbleColor.Turquoise:
+                    spriteBatch.Draw(MainScene.bobble_turquoise, Position, Color.White);
+                    break;
             }
             base.Draw(spriteBatch);
         }

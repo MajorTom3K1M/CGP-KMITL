@@ -11,12 +11,12 @@ namespace PuzzleBobble
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-        public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow;
+        public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow, bobble_white, bobble_turquoise, bobble_orange, bobble_purple;
         Texture2D rectTexture;
 
-        Texture2D shooter, loseCollider;
+        Texture2D pointer, bobble_shooter, loseCollider;
 
-        Texture2D cave, splashScreen;
+        Texture2D cave, splashScreen, game_bg;
 
         Texture2D menuBG, menuParallax, menuTitle;
         Texture2D buttonNew, buttonOption, buttonExtras, buttonExit;
@@ -91,25 +91,29 @@ namespace PuzzleBobble
             //Reference: https://www.reddit.com/r/PixelArt/comments/61xvdq/ocwipcc_a_parallax_cave_background_i_made/
             cave = this.Content.Load<Texture2D>("cave");
 
+            //Reference: http://steamtradingcards.wikia.com/wiki/File:Amygdala_Background_Cave_Background.jpg
+            game_bg = this.Content.Load<Texture2D>("game_bg");
+
             //Import Sprite of Bobble
             bobble_red = this.Content.Load<Texture2D>("bobble_red");
             bobble_blue = this.Content.Load<Texture2D>("bobble_blue");
             bobble_green = this.Content.Load<Texture2D>("bobble_green");
             bobble_yellow = this.Content.Load<Texture2D>("bobble_yellow");
+            bobble_white = this.Content.Load<Texture2D>("bobble_white");
+            bobble_turquoise = this.Content.Load<Texture2D>("bobble_turquoise");
+            bobble_purple = this.Content.Load<Texture2D>("bobble_purple");
+            bobble_orange = this.Content.Load<Texture2D>("bobble_orange");
 
             //Import GameFont
             Singleton.Instance.gameFont = this.Content.Load<SpriteFont>("GameFont");
 
             //Import Sprite of Shooter
-            shooter = this.Content.Load<Texture2D>("arrow");
+            bobble_shooter = this.Content.Load<Texture2D>("bobble_shooter");
+            pointer = this.Content.Load<Texture2D>("arrow");
             loseCollider = this.Content.Load<Texture2D>("lose_collider");
 
             switch (Singleton.Instance.currentGameScene)
             {
-                case Singleton.GameScene.TitleScene:
-                    //TODO: Add Title Graphics, maybe a splash screen
-
-                    break;
                 case Singleton.GameScene.MenuScene:
                     //TODO: Add 'New Game' Button
                     gameObjects.Add(
@@ -169,16 +173,6 @@ namespace PuzzleBobble
 
                     break;
                 case Singleton.GameScene.GameScene:
-
-                    //Add Shooter
-                    gameObjects.Add(
-                        new BobbleShooter(shooter)
-                        {
-                            Name = "Shooter",
-                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50)
-                        }
-                    );
-
                     //Add Lose Collider
                     gameObjects.Add(
                         new LoseCollider(loseCollider)
@@ -188,14 +182,31 @@ namespace PuzzleBobble
                         }
                     );
 
+                    //Add Shooter
+                    gameObjects.Add(
+                        new BobbleShooter(pointer)
+                        {
+                            Name = "Shooter",
+                            Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
+                            body = bobble_shooter
+                        }
+                    );
+
+                    //Add Score Displayer
+                    gameObjects.Add(
+                        new ScoreDisplayer(buttonNew)
+                        {
+                            Name = "ScoreDisplayer",
+                            Position = new Vector2(625, 150)
+                        }
+                    );
+
                     //Initial Bobble Pattern
                     for (int i = 0; i < 4; ++i)
                     {
                         for (int j = (i % 2); j < 15; j += 2)
                         {
                             int iOffset = 6 * i;
-                            //int jOffset = 0;
-
                             if (i < 2)
                             {
                                 if (j < 4)
@@ -303,18 +314,6 @@ namespace PuzzleBobble
                     }
                     switch (Singleton.Instance.currentGameState)
                     {
-                        case Singleton.GameSceneState.Tutorial:
-                            //TODO: Logic for 'Skip Tutorial'
-
-                            break;
-                        case Singleton.GameSceneState.Start:
-                            //TODO: Logic on First Move
-
-                            break;
-                        case Singleton.GameSceneState.Playing:
-                            //TODO: Playing Logic on each update
-
-                            break;
                         case Singleton.GameSceneState.End:
                             switch (Singleton.Instance.currentPlayerStatus)
                             {
@@ -362,19 +361,11 @@ namespace PuzzleBobble
 			// TODO: Add your update logic here
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
-                    //TODO: Splash Screen
-
                     //TODO: Sleep for 7 seconds
                     if (isFirstTime){
                         currentGameTime = gameTime.TotalGameTime.TotalSeconds;
                         isFirstTime = false;
-
-                        //DEBUG LOG
-                        //Console.WriteLine("ENTER >> " + currentGameTime);
                     } 
-
-                    //DEBUG LOG
-                    //Console.WriteLine(gameTime.TotalGameTime.TotalSeconds - currentGameTime);
 
                     if (gameTime.TotalGameTime.TotalSeconds - currentGameTime >= Singleton.SPLASH_TIME){
                         //Change Scene
@@ -414,22 +405,34 @@ namespace PuzzleBobble
                             break;
                         case Singleton.GameSceneState.Start:
                             //TODO: Logic on Each Move
+                            isFirstTime = true;
+
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Playing;
 
                             break;
                         case Singleton.GameSceneState.Playing:
-                            //TODO: Playing Logic on each update
+                            //Celling Down Logic
+                            if (isFirstTime){
+                                currentGameTime = gameTime.TotalGameTime.TotalSeconds;
+                                isFirstTime = false;
+                            } 
+
+                            if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.cellingTime){
+                                CellingDown();
+                                currentGameTime = gameTime.TotalGameTime.TotalSeconds;
+                            } 
+
+                            //Game Over Logic
                             int count = 0;
 
                             foreach(GameObject g in gameObjects){
-                                if(g.Name.Equals("NormalBobble") && g.Position.Y == 0f && g.IsActive) count++;
+                                if(g.Name.Equals("NormalBobble") && g.Position.Y == (Singleton.Instance.cellingLevel * 44) && g.IsActive) count++;
                             }
 
                             if (count == 0){
                                 Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.Won;
                                 Singleton.Instance.currentGameState = Singleton.GameSceneState.End;
                             } 
-
 
                             break;
                         case Singleton.GameSceneState.End:
@@ -493,10 +496,9 @@ namespace PuzzleBobble
 
                     spriteBatch.Draw(menuTitle, Vector2.Zero, Color.White);
 
-                    //Button Showing
-
                     break;
                 case Singleton.GameScene.GameScene:
+                    spriteBatch.Draw(game_bg, Vector2.Zero, Color.White);
                     spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
 
                     switch(Singleton.Instance.currentGameState){
@@ -536,6 +538,17 @@ namespace PuzzleBobble
             {
                 obj.Reset();
             }
+        }
+
+        protected void CellingDown(){
+            //TODO: Floor down the celling 2 step
+            foreach(GameObject g in gameObjects){
+                if (g.Name.Equals("NormalBobble") && g.IsActive){
+                    Bobble obj = g as Bobble;
+                    if(!obj.isNeverShoot || obj.isInitialized) g.Position.Y += 88;
+                }
+            }
+            Singleton.Instance.cellingLevel += 2;
         }
 	}
 }
