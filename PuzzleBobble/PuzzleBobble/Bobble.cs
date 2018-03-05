@@ -80,7 +80,7 @@ namespace PuzzleBobble
             if (Position.X <= 200) Angle = 180 - Angle;
             if (Position.X >= 550) Angle = 180 - Angle;
 
-            if (Position.Y < (Singleton.Instance.cellingLevel * 44) && isNeverShoot)
+            if (Position.Y < (Singleton.Instance.ceilingLevel * 44) && isNeverShoot)
             {
                 Speed = 0;
                 xGrid = (int)Math.Round(Position.X / 50) * 50;
@@ -141,7 +141,7 @@ namespace PuzzleBobble
             foreach (GameObject g in gameObjects)
             {
                 int y = (int)g.Position.Y / 44;
-                if (g.Name == "NormalBobble" && g.IsActive && !g.IsWaited && y != (Singleton.Instance.cellingLevel * 44)) g.IsActive = false;
+                if (g.Name == "NormalBobble" && g.IsActive && !g.IsWaited && y != (Singleton.Instance.ceilingLevel * 44)) g.IsActive = false;
             }
 
             ResetWaited(gameObjects);
@@ -186,7 +186,7 @@ namespace PuzzleBobble
                             s.Push(g);
                             g.IsVisited = true;
 
-                            if (y == Singleton.Instance.cellingLevel) return true;
+                            if (y == Singleton.Instance.ceilingLevel) return true;
                         }
                     }
                 }

@@ -417,8 +417,8 @@ namespace PuzzleBobble
                                 isFirstTime = false;
                             } 
 
-                            if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.cellingTime){
-                                CellingDown();
+                            if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.ceilingTime){
+                                CeilingDown();
                                 currentGameTime = gameTime.TotalGameTime.TotalSeconds;
                             } 
 
@@ -426,7 +426,7 @@ namespace PuzzleBobble
                             int count = 0;
 
                             foreach(GameObject g in gameObjects){
-                                if(g.Name.Equals("NormalBobble") && g.Position.Y == (Singleton.Instance.cellingLevel * 44) && g.IsActive) count++;
+                                if(g.Name.Equals("NormalBobble") && g.Position.Y == (Singleton.Instance.ceilingLevel * 44) && g.IsActive) count++;
                             }
 
                             if (count == 0){
@@ -501,6 +501,9 @@ namespace PuzzleBobble
                     spriteBatch.Draw(game_bg, Vector2.Zero, Color.White);
                     spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
 
+                    //Draw Ceiling
+                    spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, Singleton.Instance.ceilingLevel * 44), Color.Black);
+
                     switch(Singleton.Instance.currentGameState){
                         case Singleton.GameSceneState.End:
                             switch(Singleton.Instance.currentPlayerStatus){
@@ -540,7 +543,7 @@ namespace PuzzleBobble
             }
         }
 
-        protected void CellingDown(){
+        protected void CeilingDown(){
             //TODO: Floor down the celling 2 step
             foreach(GameObject g in gameObjects){
                 if (g.Name.Equals("NormalBobble") && g.IsActive){
@@ -548,7 +551,7 @@ namespace PuzzleBobble
                     if(!obj.isNeverShoot || obj.isInitialized) g.Position.Y += 88;
                 }
             }
-            Singleton.Instance.cellingLevel += 2;
+            Singleton.Instance.ceilingLevel += 2;
         }
 	}
 }

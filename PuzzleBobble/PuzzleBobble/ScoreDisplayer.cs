@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace PuzzleBobble
 {
     public class ScoreDisplayer : GameObject
     {
-        public string scoreText;
+        private string scoreText;
         public ScoreDisplayer(Texture2D texture) : base(texture)
         {
             scoreText = "000000";
