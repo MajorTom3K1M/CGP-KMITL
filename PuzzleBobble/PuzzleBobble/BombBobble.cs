@@ -35,5 +35,9 @@ namespace PuzzleBobble
             this.IsActive = true;
             base.Reset();
         }
+
+        protected void Burst(){
+            //TODO: Bomb Burst Function
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace PuzzleBobble
         {
             None,           //Not on GameScene
             Tutorial,       //Show Tutorial Box (Skip or no; can be adjusted in Option menu)
-            Start,   //First State on Game after Tutorial Box
+            Start,          //First State on Game after Tutorial Box
             Playing,        //Playing State
             End             //Game Over with showing Player Score and otherwise
         }
@@ -52,7 +52,7 @@ namespace PuzzleBobble
 
         public int score;
         public int ceilingLevel = 0;
-        public int ceilingTime = 5;
+        public int ceilingTime = 20;
 
         public SpriteFont gameFont;
 

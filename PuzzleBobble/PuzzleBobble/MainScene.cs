@@ -16,7 +16,7 @@ namespace PuzzleBobble
 
         Texture2D pointer, bobble_shooter, loseCollider;
 
-        Texture2D cave, splashScreen, game_bg;
+        Texture2D cave, splashScreen, game_bg, gameover_panel;
 
         Texture2D menuBG, menuParallax, menuTitle;
         Texture2D buttonNew, buttonOption, buttonExtras, buttonExit;
@@ -35,6 +35,8 @@ namespace PuzzleBobble
         //Menu Screen Parallax
         int parallaxHelper;
         bool isAscend;
+
+        bool hasAlreadyAdded;
 
         public MainScene()
 		{
@@ -112,9 +114,15 @@ namespace PuzzleBobble
             pointer = this.Content.Load<Texture2D>("arrow");
             loseCollider = this.Content.Load<Texture2D>("lose_collider");
 
+            //Import Game Over Panel
+            gameover_panel = this.Content.Load<Texture2D>("gameover_panel");
+
             switch (Singleton.Instance.currentGameScene)
             {
                 case Singleton.GameScene.MenuScene:
+                    
+                    hasAlreadyAdded = false;
+
                     //TODO: Add 'New Game' Button
                     gameObjects.Add(
                         new Button(buttonNew)
@@ -198,6 +206,16 @@ namespace PuzzleBobble
                         {
                             Name = "ScoreDisplayer",
                             Position = new Vector2(625, 150)
+                        }
+                    );
+
+                    //Lose Window
+                    gameObjects.Add(
+                        new GameObject(gameover_panel)
+                        {
+                            Name = "LoseWindow",
+                            Position = new Vector2(200, 200),
+                            IsActive = false
                         }
                     );
 
@@ -312,6 +330,27 @@ namespace PuzzleBobble
                             }
                         }
                     }
+
+                    //Add an inactive Game Over Panel
+                    gameObjects.Add(
+                        new Window(gameover_panel)
+                        {
+                            Name = "LoseWindow",
+                            Position = new Vector2(200, 200),
+                            IsActive = false
+                        }
+                    );
+
+                    //Add an inactive Win Panel
+                    gameObjects.Add(
+                        new Window(gameover_panel)
+                        {
+                            Name = "WinWindow",
+                            Position = new Vector2(200, 200),
+                            IsActive = false
+                        }
+                    );
+
                     switch (Singleton.Instance.currentGameState)
                     {
                         case Singleton.GameSceneState.End:
@@ -322,7 +361,6 @@ namespace PuzzleBobble
                                     break;
                                 case Singleton.PlayerStatus.Lost:
                                     //TODO: Showing losing graphics
-
                                     break;
                             }
                             //TODO: Showing current score, and submit to statistic data
@@ -338,7 +376,6 @@ namespace PuzzleBobble
                     break;
             }
             Reset();
-
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -439,10 +476,17 @@ namespace PuzzleBobble
                             switch(Singleton.Instance.currentPlayerStatus){
                                 case Singleton.PlayerStatus.Won:
                                     //TODO: Showing winning graphics
+                                    foreach (GameObject g in gameObjects)
+                                    {
+                                        if (g.Name.Equals("WinWindow") && !g.IsActive) g.IsActive = true;
+                                    }
                                     break;
                                 case Singleton.PlayerStatus.Lost:
                                     //TODO: Showing losing graphics
-
+                                    foreach (GameObject g in gameObjects)
+                                    {
+                                        if (g.Name.Equals("LoseWindow") && !g.IsActive) g.IsActive = true;
+                                    }
                                     break;
                             }
                             //TODO: Showing current score, and submit to statistic data
@@ -458,10 +502,7 @@ namespace PuzzleBobble
                     break;
             }
 
-            if (gameScene != Singleton.Instance.currentGameScene){
-                Console.WriteLine("Load Content");
-                LoadContent();
-            } 
+            if (gameScene != Singleton.Instance.currentGameScene) LoadContent();
 
 			base.Update(gameTime);
 		}
@@ -471,9 +512,9 @@ namespace PuzzleBobble
 			graphics.GraphicsDevice.Clear(Color.Black);
 
             numObj = gameObjects.Count;
-             
+
             //TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
 
             //Draw GameScreen
             switch(Singleton.Instance.currentGameScene){
@@ -498,26 +539,11 @@ namespace PuzzleBobble
 
                     break;
                 case Singleton.GameScene.GameScene:
-                    spriteBatch.Draw(game_bg, Vector2.Zero, Color.White);
-                    spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), Color.White);
+                    spriteBatch.Draw(game_bg, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+                    spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
                     //Draw Ceiling
-                    spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, Singleton.Instance.ceilingLevel * 44), Color.Black);
-
-                    switch(Singleton.Instance.currentGameState){
-                        case Singleton.GameSceneState.End:
-                            switch(Singleton.Instance.currentPlayerStatus){
-                                case Singleton.PlayerStatus.Won:
-                                    //TODO: Show Win Window
-
-                                    break;
-                                case Singleton.PlayerStatus.Lost:
-                                    //TODO: Show Lose Window
-
-                                    break;
-                            }
-                            break;
-                    }
+                    spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, Singleton.Instance.ceilingLevel * 44), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
                     break;
             }
 
@@ -552,6 +578,9 @@ namespace PuzzleBobble
                 }
             }
             Singleton.Instance.ceilingLevel += 2;
+            for (int i = 0; i < gameObjects.Count; ++i){
+                if (gameObjects[i].Name.Equals("NormalBobble") && !gameObjects[i].IsActive) gameObjects.RemoveAt(i);
+            }
         }
 	}
 }

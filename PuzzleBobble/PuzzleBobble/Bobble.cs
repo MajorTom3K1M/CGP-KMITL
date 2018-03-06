@@ -49,8 +49,8 @@ namespace PuzzleBobble
                         {
                             if (g.Name.Equals("NormalBobble") && g.IsActive)
                             {
-                                int x = (int)(g.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
-                                int y = (int)g.Position.Y / 44;
+                                int x = (int) (g.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
+                                int y = (int) g.Position.Y / 44;
 
                                 if (v - 2 == x) hasLeft = true;
                                 hasDown |= (v - 1 == x && w + 1 == y);
@@ -83,9 +83,9 @@ namespace PuzzleBobble
             if (Position.Y < (Singleton.Instance.ceilingLevel * 44) && isNeverShoot)
             {
                 Speed = 0;
-                xGrid = (int)Math.Round(Position.X / 50) * 50;
-                yGrid = (int)Math.Round(Position.Y / 44);
-                Position = new Vector2(j * (Singleton.BOBBLE_SIZE / 2) + xGrid, yGrid * 44);
+                xGrid = (int) Math.Round(Position.X / 50) * 50;
+                yGrid = (int) Math.Round(Position.Y / 44) * 44;
+                Position = new Vector2(j * (Singleton.BOBBLE_SIZE / 2) + xGrid, yGrid);
 
                 isNeverShoot = false;
             }
@@ -161,12 +161,14 @@ namespace PuzzleBobble
                 int j = (int)(current.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
                 int i = (int)current.Position.Y / 44;
 
+                if (i == Singleton.Instance.ceilingLevel) return true;
+
                 foreach (GameObject g in gameObjects)
                 {
                     if (g.Name == "NormalBobble" && g.IsActive && !g.IsVisited)
                     {
                         int x = (int)(g.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
-                        int y = (int)g.Position.Y / 44;
+                        int y = (int) g.Position.Y / 44;
 
                         bool isChecked = false;
 
@@ -180,13 +182,17 @@ namespace PuzzleBobble
                             isChecked |= j - 2 == x;
                             isChecked |= j + 2 == x;
                         }
+                        if (i + 1 == y)
+                        {
+                            isChecked |= j - 1 == x;
+                            isChecked |= j + 1 == x;
+                        }
 
                         if (isChecked)
                         {
                             s.Push(g);
                             g.IsVisited = true;
-
-                            if (y == Singleton.Instance.ceilingLevel) return true;
+                            if (y <= Singleton.Instance.ceilingLevel) return true;
                         }
                     }
                 }

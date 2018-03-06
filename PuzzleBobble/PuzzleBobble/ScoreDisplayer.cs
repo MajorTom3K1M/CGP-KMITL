@@ -36,7 +36,7 @@ namespace PuzzleBobble
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(Singleton.Instance.gameFont, scoreText, Position, Color.Black);
+            spriteBatch.DrawString(Singleton.Instance.gameFont, scoreText, Position, Color.Black, 0f, new Vector2(-20, -5), 1f, SpriteEffects.None, 0f);
             base.Draw(spriteBatch);
         }
 
