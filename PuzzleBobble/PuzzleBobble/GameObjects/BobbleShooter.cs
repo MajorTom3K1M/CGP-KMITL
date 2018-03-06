@@ -91,8 +91,17 @@ namespace PuzzleBobble
 
                         if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
                         {
-                            ShootBobble();
-                            currentShooterState = shooterState.shooterReload;
+                            if(!Singleton.Instance.IsCeilingDowing)
+                            {
+                                //Shoot Bobble
+                                ShootBobble();
+                                currentShooterState = shooterState.shooterReload;
+                            }
+                            else{
+                                //TODO: Show WAIT caution
+
+                            }
+
                         }
                         else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None){
                             //TODO: Call SwapBobble Function

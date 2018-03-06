@@ -51,8 +51,9 @@ namespace PuzzleBobble
         public PlayerStatus currentPlayerStatus;
 
         public int score;
-        public int ceilingLevel = 0;
+        public int ceilingLevel;
         public int ceilingTime = 20;
+        public bool IsCeilingDowing = false;
 
         public SpriteFont gameFont;
 

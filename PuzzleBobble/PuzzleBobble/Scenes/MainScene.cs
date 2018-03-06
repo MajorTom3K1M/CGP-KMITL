@@ -456,8 +456,10 @@ namespace PuzzleBobble
 
                             if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.ceilingTime){
                                 CeilingDown();
+                                Singleton.Instance.IsCeilingDowing = false;
                                 currentGameTime = gameTime.TotalGameTime.TotalSeconds;
-                            } 
+                            }
+                            else if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.ceilingTime - 1) Singleton.Instance.IsCeilingDowing = true;
 
                             //Game Over Logic
                             int count = 0;
