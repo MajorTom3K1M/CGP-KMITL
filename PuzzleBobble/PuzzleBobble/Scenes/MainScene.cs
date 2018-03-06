@@ -19,7 +19,9 @@ namespace PuzzleBobble
         Texture2D cave, splashScreen, game_bg, gameover_panel;
 
         Texture2D menuBG, menuParallax, menuTitle;
-        Texture2D buttonNew, buttonOption, buttonExtras, buttonExit;
+        Texture2D buttonNew, buttonOption, buttonExtras, buttonExit, buttonBack;
+
+        Texture2D optionBG, optionParallax, levelIndicator, speed30, speed25, speed20, color4, color6, color8;
 
         List<GameObject> gameObjects;
         int numObj;
@@ -117,6 +119,20 @@ namespace PuzzleBobble
             //Import Game Over Panel
             gameover_panel = this.Content.Load<Texture2D>("gameover_panel");
 
+            //Import Option Menu Graphics
+            optionBG = this.Content.Load<Texture2D>("option_bg");
+            optionParallax = this.Content.Load<Texture2D>("star_parallax");
+            levelIndicator = this.Content.Load<Texture2D>("level_indicator");
+            speed30 = this.Content.Load<Texture2D>("speed30");
+            speed25 = this.Content.Load<Texture2D>("speed25");
+            speed20 = this.Content.Load<Texture2D>("speed20");
+            color4 = this.Content.Load<Texture2D>("color4");
+            color6 = this.Content.Load<Texture2D>("color6");
+            color8 = this.Content.Load<Texture2D>("color8");
+
+            buttonBack = this.Content.Load<Texture2D>("back_button");
+
+
             switch (Singleton.Instance.currentGameScene)
             {
                 case Singleton.GameScene.MenuScene:
@@ -162,18 +178,56 @@ namespace PuzzleBobble
 
                     break;
                 case Singleton.GameScene.OptionScene:
+                    //TODO: Add 'Back' Button
+                    gameObjects.Add(
+                        new Button(buttonBack)
+                        {
+                            Name = "BackButton",
+                            Position = new Vector2(20, 20)
+                        }
+                    );
                     //TODO: Add 'BGM' Button/Slider
                     gameObjects.Add(
-                        new Button(buttonExtras)
+                        new BGMIndicator(levelIndicator)
                         {
-                            Name = "BGMButton",
-                            Position = new Vector2(100, 360)
+                            Name = "BGMIndicator",
+                            Position = new Vector2(560, 235),
+                            indicatorIndex = (int)(Singleton.Instance.bgmSound / 33)
                         }
                     );
 
                     //TODO: Add 'FX' Button/Slider
+                    gameObjects.Add(
+                        new SFXIndicator(levelIndicator)
+                        {
+                            Name = "SFXIndicator",
+                            Position = new Vector2(560, 280),
+                            ColorDisplayed = Color.LightBlue,
+                            indicatorIndex = (int)(Singleton.Instance.sfxSound / 33)
+                        }
+                    );
 
-                    //TODO: Add 'Skip Tutorial' Checkbox
+                    //TODO: Add 'Speed' Selector
+                    gameObjects.Add(
+                        new SpeedSelector(levelIndicator)
+                        {
+                            Name = "SpeedSelector",
+                            Position = new Vector2(560, 330),
+                            SelectorButton = new Texture2D[] {speed30, speed25, speed20},
+                            indicatorIndex = (2 - (Singleton.Instance.ceilingTime - 20) / 5)
+                        }
+                    );
+
+                    //TODO: Add 'Color' Selector
+                    gameObjects.Add(
+                        new ColorSelector(levelIndicator)
+                        {
+                            Name = "ColorSelector",
+                            Position = new Vector2(560, 410),
+                            SelectorButton = new Texture2D[] { color4, color6, color8 },
+                            indicatorIndex = ((Singleton.Instance.colorVariety - 4) / 2)
+                        }
+                    );
 
                     break;
                 case Singleton.GameScene.HistoryScene:
@@ -539,6 +593,20 @@ namespace PuzzleBobble
 
                     spriteBatch.Draw(menuTitle, Vector2.Zero, Color.White);
 
+                    break;
+                case Singleton.GameScene.OptionScene:
+                    spriteBatch.Draw(optionBG, Vector2.Zero, Color.White);
+                    //Parallax Function
+                    if (parallaxHelper > 250) isAscend = false;
+                    else isAscend |= parallaxHelper < 1;
+
+                    if (gameTime.TotalGameTime.Milliseconds % 1 == 0)
+                    {
+                        if (isAscend) parallaxHelper += 2;
+                        else parallaxHelper -= 2;
+                    }
+                    spriteBatch.Draw(optionParallax, new Vector2(0, 150), new Color(Color.White, parallaxHelper));
+                    
                     break;
                 case Singleton.GameScene.GameScene:
                     spriteBatch.Draw(game_bg, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);

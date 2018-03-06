@@ -52,8 +52,13 @@ namespace PuzzleBobble
 
         public int score;
         public int ceilingLevel;
-        public int ceilingTime = 20;
+        public int ceilingTime = 30;
         public bool IsCeilingDowing = false;
+
+        public int colorVariety = 4;
+
+        public float bgmSound = 99f;
+        public float sfxSound = 99f;
 
         public SpriteFont gameFont;
 

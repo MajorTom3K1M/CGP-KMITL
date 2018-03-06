@@ -62,7 +62,7 @@ namespace PuzzleBobble
                         if (timer > 1)
                         {
                             Random rand = new Random();
-                            int rnd = rand.Next(0, 8);
+                            int rnd = rand.Next(0, Singleton.Instance.colorVariety);
 
                             bobble_primary = new NormalBobble(color[rnd])
                             {

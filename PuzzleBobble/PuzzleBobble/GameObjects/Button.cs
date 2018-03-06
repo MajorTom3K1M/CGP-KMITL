@@ -24,7 +24,7 @@ namespace PuzzleBobble
             mouseState = Mouse.GetState();
             mousePosition = mouseState.Position;
 
-            if(mousePosition.X < Rectangle.Right && mousePosition.Y > Rectangle.Left && mousePosition.Y < Rectangle.Bottom && mousePosition.Y > Rectangle.Top){
+            if(mousePosition.X < Rectangle.Right && mousePosition.X > Rectangle.Left && mousePosition.Y < Rectangle.Bottom && mousePosition.Y > Rectangle.Top){
                 colorDisplay = ColorHovered;
                 if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released){
                     switch(Name){
@@ -32,6 +32,12 @@ namespace PuzzleBobble
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.None;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Tutorial;
+                            break;
+                        case "OptionButton":
+                            Singleton.Instance.currentGameScene = Singleton.GameScene.OptionScene;
+                            break;
+                        case "BackButton":
+                            Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
                             break;
                         case "ExitButton":
                             //Game Exit

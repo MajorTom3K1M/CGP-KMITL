@@ -208,7 +208,7 @@ namespace PuzzleBobble
             Console.WriteLine(findCluster(gameObjects, current));
             ResetVisited(gameObjects);
 
-            int indicator = 1;
+            int indicator = (Singleton.Instance.colorVariety / 2) * ((35 - Singleton.Instance.ceilingTime) / 5);
 
             if (findCluster(gameObjects, current) >= 3)
             {
@@ -216,7 +216,7 @@ namespace PuzzleBobble
                 {
                     if (g.Name == "NormalBobble" && g.IsActive && g.IsVisited){
                         g.IsActive = false;
-                        Singleton.Instance.score += 100 * indicator++;
+                        Singleton.Instance.score += 50 * indicator++;
                     } 
                 }
             }

@@ -50,6 +50,12 @@
     <Compile Include="GameObjects\ScoreDisplayer.cs" />
     <Compile Include="GameObjects\Window.cs" />
     <Compile Include="Scenes\MainScene.cs" />
+    <Compile Include="GameObjects\BGMIndicator.cs" />
+    <Compile Include="GameObjects\Indicator.cs" />
+    <Compile Include="GameObjects\SFXIndicator.cs" />
+    <Compile Include="GameObjects\Selector.cs" />
+    <Compile Include="GameObjects\SpeedSelector.cs" />
+    <Compile Include="GameObjects\ColorSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
