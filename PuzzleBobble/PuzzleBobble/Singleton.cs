@@ -23,7 +23,7 @@ namespace PuzzleBobble
             MenuScene,      //Menu
             OptionScene,    //Option like difficulty
             GameScene,      //Main Game Scene
-            HistoryScene    //Show Player Statistic on each play
+            ExtrasScene     //Show Player Statistic on each play
         }
 
         public GameScene currentGameScene;
@@ -32,7 +32,6 @@ namespace PuzzleBobble
         public enum GameSceneState
         {
             None,           //Not on GameScene
-            Tutorial,       //Show Tutorial Box (Skip or no; can be adjusted in Option menu)
             Start,          //First State on Game after Tutorial Box
             Playing,        //Playing State
             End             //Game Over with showing Player Score and otherwise
@@ -53,12 +52,16 @@ namespace PuzzleBobble
         public int score;
         public int ceilingLevel;
         public int ceilingTime = 30;
-        public bool IsCeilingDowing = false;
+        public bool IsCeilingDowing;
 
         public int colorVariety = 4;
 
         public float bgmSound = 99f;
         public float sfxSound = 99f;
+
+        public bool IsBlindMode;
+
+        //public bool IsHovered = false;
 
         public SpriteFont gameFont;
 

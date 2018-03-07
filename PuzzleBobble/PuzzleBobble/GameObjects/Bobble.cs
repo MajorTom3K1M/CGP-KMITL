@@ -209,6 +209,7 @@ namespace PuzzleBobble
             ResetVisited(gameObjects);
 
             int indicator = (Singleton.Instance.colorVariety / 2) * ((35 - Singleton.Instance.ceilingTime) / 5);
+            if (Singleton.Instance.IsBlindMode) indicator++;
 
             if (findCluster(gameObjects, current) >= 3)
             {

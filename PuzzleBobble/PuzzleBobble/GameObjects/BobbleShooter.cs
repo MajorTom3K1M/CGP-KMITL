@@ -8,17 +8,18 @@ namespace PuzzleBobble
 {
     public class BobbleShooter : GameObject
     {
-        NormalBobble bobble_primary, bobble_secondary;
-
+        NormalBobble bobble_primary, bobble_secondary, bobble;
         Point mousePosition;
         MouseState mouseClickedState, previousMouseState, mouseState;
         public float Speed;
         public float Angle;
         public double mouseAngle;
-
         public Texture2D body;
 
+        double cur;
+
         Queue<GameObject> q = new Queue<GameObject>();
+        Queue<GameObject> bobbleQ = new Queue<GameObject>();
 
         private float timer;
 
@@ -26,6 +27,7 @@ namespace PuzzleBobble
         {
             shooterReload,
             shooterReady
+
         }
 
         private shooterState currentShooterState;
@@ -34,13 +36,16 @@ namespace PuzzleBobble
         NormalBobble.BobbleColor[] normalBobbleColor = { NormalBobble.BobbleColor.Red, NormalBobble.BobbleColor.Blue,
             NormalBobble.BobbleColor.Green, NormalBobble.BobbleColor.Yellow, NormalBobble.BobbleColor.Purple, NormalBobble.BobbleColor.Orange, NormalBobble.BobbleColor.White, NormalBobble.BobbleColor.Turquoise };
 
+        int i = 0;
+
         public BobbleShooter(Texture2D texture) : base(texture)
         {
         }
 
         public override void Update(GameTime gameTime, List<GameObject> gameObjects)
         {
-            if(Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None){
+            if (Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
+            {
                 previousMouseState = mouseClickedState;
                 mouseState = Mouse.GetState();
                 mousePosition = mouseState.Position;
@@ -57,30 +62,52 @@ namespace PuzzleBobble
                 switch (currentShooterState)
                 {
                     case shooterState.shooterReload:
+                        if (bobble_primary != null)
+                        {
+                            foreach (GameObject g in gameObjects)
+                            {
+                                if (bobble_primary.circleCollide(g) && !g.Equals(bobble_primary) && g.Name.Equals("NormalBobble"))
+                                {
+                                    bobble_primary = bobble_secondary.Clone() as NormalBobble;
+                                    bobble_primary.Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75);
+                                    Console.WriteLine(bobble_secondary.Position);
+                                }
+                            }
+                        }
                         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                         if (timer > 1)
                         {
                             Random rand = new Random();
                             int rnd = rand.Next(0, Singleton.Instance.colorVariety);
-
-                            bobble_primary = new NormalBobble(color[rnd])
+                            if (bobble_primary == null)
                             {
-                                Name = "NormalBobble",
-                                bobbleColor = normalBobbleColor[rnd],
-                                Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
-                            };
+                                bobble_primary = new NormalBobble(color[rnd])
+                                {
+                                    Name = "NormalBobble",
+                                    bobbleColor = normalBobbleColor[rnd],
+                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                                };
+                            }
 
                             gameObjects.Add(bobble_primary);
 
-                            //TODO: Create Secondary Bobble for Swaping
+                            //Add secondary bobble
+                            rnd = rand.Next(0, Singleton.Instance.colorVariety);
+                            bobble_secondary = new NormalBobble(color[rnd])
+                            {
+                                Name = "NormalBobble",
+                                bobbleColor = normalBobbleColor[rnd],
+                                Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 150, Singleton.MAINSCREEN_HEIGHT - 75)
+                            };
+
+                            gameObjects.Add(bobble_secondary);
 
                             timer = 0;
 
                             currentShooterState = shooterState.shooterReady;
                         }
                         break;
-
                     case shooterState.shooterReady:
                         previousMouseState = mouseClickedState;
                         mouseClickedState = Mouse.GetState();
@@ -91,32 +118,49 @@ namespace PuzzleBobble
 
                         if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
                         {
-                            if(!Singleton.Instance.IsCeilingDowing)
+                            if (!Singleton.Instance.IsCeilingDowing)
                             {
                                 //Shoot Bobble
                                 ShootBobble();
                                 currentShooterState = shooterState.shooterReload;
                             }
-                            else{
+                            else
+                            {
                                 //TODO: Show WAIT caution
-
+                                foreach(GameObject g in gameObjects){
+                                    if (g.Name.Equals("WarningText") && !g.IsActive){
+                                        cur = gameTime.TotalGameTime.TotalSeconds;
+                                        g.IsActive = true;
+                                    } 
+                                }
                             }
-
                         }
-                        else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None){
+                        else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
+                        {
                             //TODO: Call SwapBobble Function
-                            SwapBobble();
+                            SwapBobble(bobble_primary, bobble_secondary, gameObjects);
+                            NormalBobble temp;
+                            temp = bobble_primary;
+                            bobble_primary = bobble_secondary;
+                            bobble_secondary = temp;
                         }
-
                         break;
+                }
+
+                //Remove Warning Text
+                if(gameTime.TotalGameTime.TotalSeconds - cur >= 1){
+                    foreach (GameObject g in gameObjects){
+                        if (g.Name.Equals("WarningText") && g.IsActive) g.IsActive = false;
+                    }
                 }
             }
 
             base.Update(gameTime, gameObjects);
         }
 
-        private void ShootBobble(){
-            bobble_primary.Angle = (float) mouseAngle;
+        private void ShootBobble()
+        {
+            bobble_primary.Angle = (float)mouseAngle;
             bobble_primary.Speed = 700;
         }
 
@@ -133,8 +177,16 @@ namespace PuzzleBobble
             base.Reset();
         }
 
-        protected void SwapBobble(){
-            //TODO: Swapping Function when Right-click
+        protected void SwapBobble(GameObject b1, GameObject b2, List<GameObject> gameObjects)
+        {
+            if (gameObjects.Contains(b1) && gameObjects.Contains(b2))
+            {
+                int index = gameObjects.FindIndex(x => x.Equals(b1));
+                int index2 = gameObjects.FindIndex(x => x.Equals(b2));
+
+                gameObjects[index].Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 150, Singleton.MAINSCREEN_HEIGHT - 75);
+                gameObjects[index2].Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75);
+            }
         }
     }
 }

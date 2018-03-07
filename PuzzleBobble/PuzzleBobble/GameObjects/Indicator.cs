@@ -48,7 +48,7 @@ namespace PuzzleBobble
         public override void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < colorDisplay.Length; ++i){
-                spriteBatch.Draw(_texture, new Vector2(Position.X + (i * 65), Position.Y), colorDisplay[i]);
+                spriteBatch.Draw(_texture, new Vector2(Position.X + (i * 65), Position.Y), null, colorDisplay[i], 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             }
 
             base.Draw(spriteBatch);

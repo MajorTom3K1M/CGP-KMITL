@@ -48,8 +48,8 @@ namespace PuzzleBobble
         public override void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < colorDisplay.Length; ++i){
-                if(indicatorIndex == i) spriteBatch.Draw(SelectorButton[i], new Vector2(Position.X + (i * 65) + 7f, Position.Y - 10f), null, colorDisplay[i], MathHelper.ToRadians(10), Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                else spriteBatch.Draw(SelectorButton[i], new Vector2(Position.X + (i * 65), Position.Y), colorDisplay[i]);
+                if(indicatorIndex == i) spriteBatch.Draw(SelectorButton[i], new Vector2(Position.X + (i * 65) + 7f, Position.Y - 10f), null, colorDisplay[i], MathHelper.ToRadians(10), Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+                else spriteBatch.Draw(SelectorButton[i], new Vector2(Position.X + (i * 65), Position.Y), null, colorDisplay[i], 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             }
 
             base.Draw(spriteBatch);

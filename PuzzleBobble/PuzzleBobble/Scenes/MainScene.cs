@@ -11,17 +11,20 @@ namespace PuzzleBobble
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-        public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow, bobble_white, bobble_turquoise, bobble_orange, bobble_purple;
-        Texture2D rectTexture;
+        public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow, bobble_white, bobble_turquoise, bobble_orange, bobble_purple, bombbobble;
+        Texture2D rectTexture, mouseNormal, mouseHovered;
 
         Texture2D pointer, bobble_shooter, loseCollider;
 
-        Texture2D cave, splashScreen, game_bg, gameover_panel, win_panel;
+        Texture2D cave, splashScreen, game_bg, gameover_panel, win_panel, warning;
 
         Texture2D menuBG, menuParallax, menuTitle;
         Texture2D buttonNew, buttonOption, buttonExtras, buttonExit, buttonBack, backmenu_button;
 
+        //Option Menu
         Texture2D optionBG, optionParallax, levelIndicator, speed30, speed25, speed20, color4, color6, color8;
+
+        Texture2D extrasBG, hcMode, blMode, nmMode;
 
         List<GameObject> gameObjects;
         int numObj;
@@ -44,6 +47,7 @@ namespace PuzzleBobble
 		{
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
+            this.Window.Title = "GEMyth";
 		}
 
 		protected override void Initialize()
@@ -91,6 +95,11 @@ namespace PuzzleBobble
             buttonExtras = this.Content.Load<Texture2D>("button_ext");
             buttonExit = this.Content.Load<Texture2D>("button_exit");
 
+            warning = this.Content.Load<Texture2D>("warning_text");
+
+            mouseNormal = this.Content.Load<Texture2D>("mousepointer");
+            //mouseHovered = this.Content.Load<Texture2D>("mousehover");
+
             //Import Sprite for GameScreen BG
             //Reference: https://www.reddit.com/r/PixelArt/comments/61xvdq/ocwipcc_a_parallax_cave_background_i_made/
             cave = this.Content.Load<Texture2D>("cave");
@@ -107,6 +116,7 @@ namespace PuzzleBobble
             bobble_turquoise = this.Content.Load<Texture2D>("bobble_turquoise");
             bobble_purple = this.Content.Load<Texture2D>("bobble_purple");
             bobble_orange = this.Content.Load<Texture2D>("bobble_orange");
+            bombbobble = this.Content.Load<Texture2D>("bobble_bomb");
 
             //Import GameFont
             Singleton.Instance.gameFont = this.Content.Load<SpriteFont>("GameFont");
@@ -134,11 +144,16 @@ namespace PuzzleBobble
             buttonBack = this.Content.Load<Texture2D>("back_button");
 			backmenu_button = this.Content.Load<Texture2D>("backmenu_button");
 
+            //Import Extras Menu Graphics
+            extrasBG = this.Content.Load<Texture2D>("extras_bg");
+            hcMode = this.Content.Load<Texture2D>("hcmode");
+            blMode = this.Content.Load<Texture2D>("blmode");
+            nmMode = this.Content.Load<Texture2D>("nmmode");
+
 
             switch (Singleton.Instance.currentGameScene)
             {
                 case Singleton.GameScene.MenuScene:
-                    
                     hasAlreadyAdded = false;
 
                     //TODO: Add 'New Game' Button
@@ -232,9 +247,51 @@ namespace PuzzleBobble
                     );
 
                     break;
-                case Singleton.GameScene.HistoryScene:
-                    //TODO: Show Game History, like High Score or other Statistical Data
+                case Singleton.GameScene.ExtrasScene:
+                    //Back Button
+                    gameObjects.Add(
+                        new Button(buttonBack)
+                        {
+                            Name = "BackButton",
+                            Position = new Vector2(20, 20)
+                        }
+                    );
 
+                    //Hardcore Panel
+                    gameObjects.Add(
+                        new Button(hcMode)
+                        {
+                            Name = "HardcorePanel",
+                            Position = new Vector2(77, 228)
+                        }
+                    );
+
+                    //Blind Panel
+                    gameObjects.Add(
+                        new Button(blMode)
+                        {
+                            Name = "BlindPanel",
+                            Position = new Vector2(312, 228)
+                        }
+                    );
+
+                    //Nightmare Panel
+                    gameObjects.Add(
+                        new Button(nmMode)
+                        {
+                            Name = "NightmarePanel",
+                            Position = new Vector2(551, 228)
+                        }
+                    );
+
+                    //Add Warning
+                    gameObjects.Add(
+                        new Window(warning)
+                        {
+                            Name = "WarningPopup",
+                            Position = new Vector2(551 + (nmMode.Width / 2) - warning.Width / 2, 238 + nmMode.Height)
+                        }
+                    );
                     break;
                 case Singleton.GameScene.GameScene:
                     //Add Lose Collider
@@ -262,16 +319,6 @@ namespace PuzzleBobble
                         {
                             Name = "ScoreDisplayer",
                             Position = new Vector2(625, 150)
-                        }
-                    );
-
-                    //Lose Window
-                    gameObjects.Add(
-                        new GameObject(gameover_panel)
-                        {
-                            Name = "LoseWindow",
-                            Position = new Vector2(200, 200),
-                            IsActive = false
                         }
                     );
 
@@ -415,28 +462,15 @@ namespace PuzzleBobble
                             InitialActivated = false
                         }
                     );
-                    switch (Singleton.Instance.currentGameState)
-                    {
-                        case Singleton.GameSceneState.End:
-                            switch (Singleton.Instance.currentPlayerStatus)
-                            {
-                                case Singleton.PlayerStatus.Won:
-                                    //TODO: Showing winning graphics
-                                    break;
-                                case Singleton.PlayerStatus.Lost:
-                                    //TODO: Showing losing graphics
-                                    break;
-                            }
-                            //TODO: Showing current score, and submit to statistic data
 
-                            //TODO: Showing high score, in statistic data
-
-                            //TODO: Add 'Play Again' Button
-
-                            //TODO: Add 'Back to Title' Button
-
-                            break;
-                    }
+                    //Add Warning
+                    gameObjects.Add(
+                        new Window(warning)
+                        {
+                            Name = "WarningText",
+                            Position = new Vector2(400 - warning.Width / 2, 450)
+                        }
+                    );
                     break;
             }
             Reset();
@@ -474,40 +508,11 @@ namespace PuzzleBobble
                     }
 
                     break;
-                case Singleton.GameScene.MenuScene:
-                    //TODO: Add 'New Game' button logic, move to GameScene
-                    //TODO: Adding some animation for represent the scene transistion
-
-                    //TODO: Add 'Option' Button
-
-                    //TODO: Add 'History' Button
-
-                    //TODO: Add 'Exit' Button
-
-                    break;
-                case Singleton.GameScene.OptionScene:
-                    //TODO: Add 'BGM' Button/Slider
-
-                    //TODO: Add 'FX' Button/Slider
-
-                    //TODO: Add 'Skip Tutorial' Checkbox
-
-                    break;
-                case Singleton.GameScene.HistoryScene:
-                    //TODO: Show Game History, like High Score or other Statistical Data
-
-                    break;
                 case Singleton.GameScene.GameScene:
                     switch(Singleton.Instance.currentGameState){
-                        case Singleton.GameSceneState.Tutorial:
-                            //TODO: Logic for 'Skip Tutorial'
-                            Singleton.Instance.currentGameState = Singleton.GameSceneState.Start;
-
-                            break;
                         case Singleton.GameSceneState.Start:
                             //TODO: Logic on Each Move
                             isFirstTime = true;
-
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Playing;
 
                             break;
@@ -557,14 +562,6 @@ namespace PuzzleBobble
                                     }
                                     break;
                             }
-                            //TODO: Showing current score, and submit to statistic data
-
-                            //TODO: Showing high score, in statistic data
-
-                            //TODO: Add 'Play Again' Button
-
-                            //TODO: Add 'Back to Title' Button
-
                             break;
                     }
                     break;
@@ -584,14 +581,19 @@ namespace PuzzleBobble
             //TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 
+            //Mouse Cursor
+            spriteBatch.Draw(mouseNormal, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), null, Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+            //if(!Singleton.Instance.IsHovered) spriteBatch.Draw(mouseNormal, new Vector2(Mouse.GetState().X, Mouse.GetState().Y) , null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            //else spriteBatch.Draw(mouseHovered, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                
             //Draw GameScreen
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
                     //TODO: Draw Splash Screen
-                    spriteBatch.Draw(splashScreen, Vector2.Zero, new Color(Color.White, parallaxHelper));
+                    spriteBatch.Draw(splashScreen, Vector2.Zero, null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                     break;
                 case Singleton.GameScene.MenuScene:
-                    spriteBatch.Draw(menuBG, Vector2.Zero, Color.White);
+                    spriteBatch.Draw(menuBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
                     //Parallax Function
                     if(parallaxHelper > 250) isAscend = false;
@@ -601,13 +603,13 @@ namespace PuzzleBobble
                         if(isAscend) parallaxHelper++;
                         else parallaxHelper--;
                     } 
-                    spriteBatch.Draw(menuParallax, Vector2.Zero, new Color(Color.White, parallaxHelper));
+                    spriteBatch.Draw(menuParallax, Vector2.Zero, null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
 
-                    spriteBatch.Draw(menuTitle, Vector2.Zero, Color.White);
+                    spriteBatch.Draw(menuTitle, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
 
                     break;
                 case Singleton.GameScene.OptionScene:
-                    spriteBatch.Draw(optionBG, Vector2.Zero, Color.White);
+                    spriteBatch.Draw(optionBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                     //Parallax Function
                     if (parallaxHelper > 250) isAscend = false;
                     else isAscend |= parallaxHelper < 1;
@@ -617,8 +619,10 @@ namespace PuzzleBobble
                         if (isAscend) parallaxHelper += 2;
                         else parallaxHelper -= 2;
                     }
-                    spriteBatch.Draw(optionParallax, new Vector2(0, 150), new Color(Color.White, parallaxHelper));
-                    
+                    spriteBatch.Draw(optionParallax, new Vector2(0, 150), null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+                    break;
+                case Singleton.GameScene.ExtrasScene:
+                    spriteBatch.Draw(extrasBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                     break;
                 case Singleton.GameScene.GameScene:
                     spriteBatch.Draw(game_bg, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
@@ -626,6 +630,18 @@ namespace PuzzleBobble
 
                     //Draw Ceiling
                     spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, Singleton.Instance.ceilingLevel * 44), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+
+                    if(Singleton.Instance.IsBlindMode){
+                        if (parallaxHelper > 250) isAscend = false;
+                        else isAscend |= parallaxHelper < 1;
+
+                        if (gameTime.TotalGameTime.Milliseconds % 1 == 0)
+                        {
+                            if (isAscend) parallaxHelper++;
+                            else parallaxHelper--;
+                        }
+                        spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, 600), null, new Color(Color.Black, parallaxHelper), 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
+                    }
                     break;
             }
 
@@ -653,7 +669,7 @@ namespace PuzzleBobble
         }
 
         protected void CeilingDown(){
-            //TODO: Floor down the celling 2 step
+            //TODO: Floor down the celling 2 steps 
             foreach(GameObject g in gameObjects){
                 if (g.Name.Equals("NormalBobble") && g.IsActive){
                     Bobble obj = g as Bobble;
