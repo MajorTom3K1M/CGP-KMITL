@@ -64,6 +64,34 @@ namespace PuzzleBobble
                             yGrid += 44;
                         }
                     }
+                    else if ((xGrid - 200) / (Singleton.BOBBLE_SIZE / 2) < 0)
+                    {
+                        bool hasRight, hasDown;
+                        hasRight = hasDown = false;
+
+                        int v = (int)(this.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
+                        int w = (int)this.Position.Y / 44;
+
+                        foreach (GameObject obj in gameObjects)
+                        {
+                            if (g.Name.Equals("NormalBobble") && g.IsActive)
+                            {
+                                int x = (int)(g.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
+                                int y = (int)g.Position.Y / 44;
+
+                                if (v + 2 == x) hasRight = true;
+                                hasDown |= (v + 1 == x && w + 1 == y);
+                            }
+                        }
+
+                        if (!hasRight) xGrid = 1 * (Singleton.BOBBLE_SIZE / 2) + 200;
+                        else if (!hasDown)
+                        {
+                            xGrid = 200;
+                            yGrid += 44;
+                        }
+                    }
+
                     Position = new Vector2(xGrid, yGrid);
                     Velocity = Vector2.Zero;
                     isNeverShoot = false;
