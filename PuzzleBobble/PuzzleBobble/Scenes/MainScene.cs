@@ -16,10 +16,10 @@ namespace PuzzleBobble
 
         Texture2D pointer, bobble_shooter, loseCollider;
 
-        Texture2D cave, splashScreen, game_bg, gameover_panel;
+        Texture2D cave, splashScreen, game_bg, gameover_panel, win_panel;
 
         Texture2D menuBG, menuParallax, menuTitle;
-        Texture2D buttonNew, buttonOption, buttonExtras, buttonExit, buttonBack;
+        Texture2D buttonNew, buttonOption, buttonExtras, buttonExit, buttonBack, backmenu_button;
 
         Texture2D optionBG, optionParallax, levelIndicator, speed30, speed25, speed20, color4, color6, color8;
 
@@ -118,6 +118,7 @@ namespace PuzzleBobble
 
             //Import Game Over Panel
             gameover_panel = this.Content.Load<Texture2D>("gameover_panel");
+            win_panel = this.Content.Load<Texture2D>("win_panel");
 
             //Import Option Menu Graphics
             optionBG = this.Content.Load<Texture2D>("option_bg");
@@ -131,6 +132,7 @@ namespace PuzzleBobble
             color8 = this.Content.Load<Texture2D>("color8");
 
             buttonBack = this.Content.Load<Texture2D>("back_button");
+			backmenu_button = this.Content.Load<Texture2D>("backmenu_button");
 
 
             switch (Singleton.Instance.currentGameScene)
@@ -390,21 +392,29 @@ namespace PuzzleBobble
                         new Window(gameover_panel)
                         {
                             Name = "LoseWindow",
-                            Position = new Vector2(200, 200),
+                            Position = new Vector2(0, 0),
                             IsActive = false
                         }
                     );
 
                     //Add an inactive Win Panel
                     gameObjects.Add(
-                        new Window(gameover_panel)
+                        new Window(win_panel)
                         {
                             Name = "WinWindow",
-                            Position = new Vector2(200, 200),
+                            Position = new Vector2(0, 0),
                             IsActive = false
                         }
                     );
 
+                    gameObjects.Add(
+                        new Button(backmenu_button)
+                        {
+                            Name = "BackMenuButton",
+                            Position = new Vector2(380, 335),
+                            InitialActivated = false
+                        }
+                    );
                     switch (Singleton.Instance.currentGameState)
                     {
                         case Singleton.GameSceneState.End:
@@ -535,6 +545,7 @@ namespace PuzzleBobble
                                     foreach (GameObject g in gameObjects)
                                     {
                                         if (g.Name.Equals("WinWindow") && !g.IsActive) g.IsActive = true;
+                                        if (g.Name.Equals("BackMenuButton") && !g.IsActive) g.IsActive = true;
                                     }
                                     break;
                                 case Singleton.PlayerStatus.Lost:
@@ -542,6 +553,7 @@ namespace PuzzleBobble
                                     foreach (GameObject g in gameObjects)
                                     {
                                         if (g.Name.Equals("LoseWindow") && !g.IsActive) g.IsActive = true;
+                                        if (g.Name.Equals("BackMenuButton") && !g.IsActive) g.IsActive = true;
                                     }
                                     break;
                             }
@@ -637,6 +649,7 @@ namespace PuzzleBobble
             {
                 obj.Reset();
             }
+            Singleton.Instance.ceilingLevel = 0;
         }
 
         protected void CeilingDown(){

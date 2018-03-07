@@ -13,6 +13,7 @@ namespace PuzzleBobble
 
         Color colorDisplay = Color.White;
         public Color ColorHovered = Color.Gray;
+        public bool InitialActivated = true;
 
         public Button(Texture2D texture) : base(texture)
         {
@@ -29,6 +30,7 @@ namespace PuzzleBobble
                 if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released){
                     switch(Name){
                         case "NewGameButton":
+                            Singleton.Instance.score = 0;
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.None;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Tutorial;
@@ -36,6 +38,7 @@ namespace PuzzleBobble
                         case "OptionButton":
                             Singleton.Instance.currentGameScene = Singleton.GameScene.OptionScene;
                             break;
+                        case "BackMenuButton":
                         case "BackButton":
                             Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
                             break;
@@ -62,7 +65,7 @@ namespace PuzzleBobble
 
         public override void Reset()
         {
-            this.IsActive = true;
+            this.IsActive = InitialActivated;
             base.Reset();
         }
     }
