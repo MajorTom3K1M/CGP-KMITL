@@ -32,7 +32,7 @@ namespace PuzzleBobble
         public enum GameSceneState
         {
             None,           //Not on GameScene
-            Start,          //First State on Game after Tutorial Box
+            Start,          //First State on Game
             Playing,        //Playing State
             End             //Game Over with showing Player Score and otherwise
         }
@@ -53,11 +53,14 @@ namespace PuzzleBobble
         public int ceilingLevel;
         public int ceilingTime = 30;
         public bool IsCeilingDowing;
+        public int turnCounter;
 
         public int colorVariety = 4;
 
         public float bgmSound = 99f;
         public float sfxSound = 99f;
+
+        public int bombTime = 7;
 
         public bool IsBlindMode;
 

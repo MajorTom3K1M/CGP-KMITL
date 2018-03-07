@@ -61,6 +61,7 @@ namespace PuzzleBobble
                             Singleton.Instance.ceilingTime = 15;
                             Singleton.Instance.colorVariety = 8;
                             Singleton.Instance.IsBlindMode = false;
+                            Singleton.Instance.bombTime = 10;
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.None;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Start;
@@ -70,6 +71,7 @@ namespace PuzzleBobble
                             Singleton.Instance.ceilingTime = 20;
                             Singleton.Instance.colorVariety = 8;
                             Singleton.Instance.IsBlindMode = true;
+                            Singleton.Instance.bombTime = 10;
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.None;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Start;
@@ -79,6 +81,7 @@ namespace PuzzleBobble
                             Singleton.Instance.ceilingTime = 15;
                             Singleton.Instance.colorVariety = 8;
                             Singleton.Instance.IsBlindMode = true;
+                            Singleton.Instance.bombTime = 999;
                             Singleton.Instance.currentGameScene = Singleton.GameScene.GameScene;
                             Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.None;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Start;

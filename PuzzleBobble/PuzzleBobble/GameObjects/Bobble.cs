@@ -121,7 +121,7 @@ namespace PuzzleBobble
             //Check if still and not an initialized one
             if (Velocity == Vector2.Zero && !isInitialized && !isNeverShoot)
             {
-                destroyCluster(gameObjects, this);
+                destroyCluster(gameObjects, this, 3);
                 isInitialized = true;
             }
 
@@ -138,7 +138,7 @@ namespace PuzzleBobble
             this.IsActive = true;
             base.Reset();
         }
-        private void ResetVisited(List<GameObject> gameObjects)
+        public static void ResetVisited(List<GameObject> gameObjects)
         {
             foreach (GameObject g in gameObjects)
             {
@@ -146,14 +146,14 @@ namespace PuzzleBobble
             }
         }
 
-        private void ResetWaited(List<GameObject> gameObjects)
+        public static void ResetWaited(List<GameObject> gameObjects)
         {
             foreach (GameObject g in gameObjects)
             {
                 if (g.Name == "NormalBobble" && g.IsActive) g.IsWaited = false;
             }
         }
-        private void destroySeparate(List<GameObject> gameObjects)
+        public static void destroySeparate(List<GameObject> gameObjects)
         {
             foreach (GameObject g in gameObjects)
             {
@@ -176,7 +176,7 @@ namespace PuzzleBobble
         }
 
         //Remove the solitared bobble which no holder
-        private bool destroySeperateHandler(List<GameObject> gameObjects, GameObject current)
+        public static bool destroySeperateHandler(List<GameObject> gameObjects, GameObject current)
         {
             Stack<GameObject> s = new Stack<GameObject>();
             s.Push(current);
@@ -229,7 +229,7 @@ namespace PuzzleBobble
         }
 
         //Destroy if same-color cluster is more than 3
-        private void destroyCluster(List<GameObject> gameObjects, GameObject current)
+        public void destroyCluster(List<GameObject> gameObjects, GameObject current, int clusterSize)
         {
             ResetVisited(gameObjects);
 
@@ -239,7 +239,7 @@ namespace PuzzleBobble
             int indicator = (Singleton.Instance.colorVariety / 2) * ((35 - Singleton.Instance.ceilingTime) / 5);
             if (Singleton.Instance.IsBlindMode) indicator++;
 
-            if (findCluster(gameObjects, current) >= 3)
+            if (findCluster(gameObjects, current) >= clusterSize)
             {
                 foreach (GameObject g in gameObjects)
                 {

@@ -14,7 +14,7 @@ namespace PuzzleBobble
         public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow, bobble_white, bobble_turquoise, bobble_orange, bobble_purple, bombbobble;
         Texture2D rectTexture, mouseNormal, mouseHovered;
 
-        Texture2D pointer, bobble_shooter, loseCollider;
+        Texture2D pointer, bobble_shooter, shooter_inside, loseCollider;
 
         Texture2D cave, splashScreen, game_bg, gameover_panel, win_panel, warning;
 
@@ -123,6 +123,7 @@ namespace PuzzleBobble
 
             //Import Sprite of Shooter
             bobble_shooter = this.Content.Load<Texture2D>("bobble_shooter");
+            shooter_inside = this.Content.Load<Texture2D>("shooter_center");
             pointer = this.Content.Load<Texture2D>("arrow");
             loseCollider = this.Content.Load<Texture2D>("lose_collider");
 
@@ -309,7 +310,8 @@ namespace PuzzleBobble
                         {
                             Name = "Shooter",
                             Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
-                            body = bobble_shooter
+                            body = bobble_shooter,
+                            insideBody = shooter_inside
                         }
                     );
 
@@ -640,7 +642,7 @@ namespace PuzzleBobble
                             if (isAscend) parallaxHelper++;
                             else parallaxHelper--;
                         }
-                        spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, 600), null, new Color(Color.Black, parallaxHelper), 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
+                        spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, 600), null, new Color(Color.Black, parallaxHelper), 0f, Vector2.Zero, SpriteEffects.None, 0.15f);
                     }
                     break;
             }
@@ -666,6 +668,7 @@ namespace PuzzleBobble
                 obj.Reset();
             }
             Singleton.Instance.ceilingLevel = 0;
+            Singleton.Instance.turnCounter = 0;
         }
 
         protected void CeilingDown(){
@@ -680,6 +683,26 @@ namespace PuzzleBobble
             for (int i = 0; i < gameObjects.Count; ++i){
                 if (gameObjects[i].Name.Equals("NormalBobble") && !gameObjects[i].IsActive) gameObjects.RemoveAt(i);
             }
+        }
+
+        public static void CeilingUp(List<GameObject> gameObjects)
+        {
+            //TODO: Floor down the celling 2 steps 
+            foreach (GameObject g in gameObjects)
+            {
+                if (g.Name.Equals("NormalBobble") && g.IsActive)
+                {
+                    Bobble obj = g as Bobble;
+                    if (!obj.isNeverShoot || obj.isInitialized) g.Position.Y -= 88;
+                }
+            }
+            Singleton.Instance.ceilingLevel -= 2;
+            for (int i = 0; i < gameObjects.Count; ++i)
+            {
+                if (gameObjects[i].Name.Equals("NormalBobble") && !gameObjects[i].IsActive) gameObjects.RemoveAt(i);
+            }
+
+            Bobble.destroySeparate(gameObjects);
         }
 	}
 }

@@ -9,12 +9,15 @@ namespace PuzzleBobble
     public class BobbleShooter : GameObject
     {
         NormalBobble bobble_primary, bobble_secondary, bobble;
+        BombBobble bomb;
         Point mousePosition;
         MouseState mouseClickedState, previousMouseState, mouseState;
         public float Speed;
         public float Angle;
         public double mouseAngle;
-        public Texture2D body;
+        public Texture2D body, insideBody;
+
+        bool IsBomb;
 
         double cur;
 
@@ -35,8 +38,6 @@ namespace PuzzleBobble
         Texture2D[] color = { MainScene.bobble_red, MainScene.bobble_blue, MainScene.bobble_green, MainScene.bobble_yellow, MainScene.bobble_white, MainScene.bobble_turquoise, MainScene.bobble_purple, MainScene.bobble_orange };
         NormalBobble.BobbleColor[] normalBobbleColor = { NormalBobble.BobbleColor.Red, NormalBobble.BobbleColor.Blue,
             NormalBobble.BobbleColor.Green, NormalBobble.BobbleColor.Yellow, NormalBobble.BobbleColor.Purple, NormalBobble.BobbleColor.Orange, NormalBobble.BobbleColor.White, NormalBobble.BobbleColor.Turquoise };
-
-        int i = 0;
 
         public BobbleShooter(Texture2D texture) : base(texture)
         {
@@ -62,7 +63,7 @@ namespace PuzzleBobble
                 switch (currentShooterState)
                 {
                     case shooterState.shooterReload:
-                        if (bobble_primary != null)
+                        if (bobble_primary != null && Singleton.Instance.turnCounter < Singleton.Instance.bombTime)
                         {
                             foreach (GameObject g in gameObjects)
                             {
@@ -70,7 +71,6 @@ namespace PuzzleBobble
                                 {
                                     bobble_primary = bobble_secondary.Clone() as NormalBobble;
                                     bobble_primary.Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75);
-                                    Console.WriteLine(bobble_secondary.Position);
                                 }
                             }
                         }
@@ -78,30 +78,43 @@ namespace PuzzleBobble
 
                         if (timer > 1)
                         {
-                            Random rand = new Random();
-                            int rnd = rand.Next(0, Singleton.Instance.colorVariety);
-                            if (bobble_primary == null)
-                            {
-                                bobble_primary = new NormalBobble(color[rnd])
+                            if(Singleton.Instance.turnCounter >= Singleton.Instance.bombTime){
+                                IsBomb = true;
+                                bomb = new BombBobble(MainScene.bombbobble)
+                                {
+                                    Name = "BombBobble",
+                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                                };
+                                Singleton.Instance.turnCounter = 0;
+                                gameObjects.Add(bomb);
+                                bobble_primary = null;
+                            }
+                            else{
+                                Random rand = new Random();
+                                int rnd = rand.Next(0, Singleton.Instance.colorVariety);
+                                if (bobble_primary == null)
+                                {
+                                    bobble_primary = new NormalBobble(color[rnd])
+                                    {
+                                        Name = "NormalBobble",
+                                        bobbleColor = normalBobbleColor[rnd],
+                                        Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                                    };
+                                }
+
+                                gameObjects.Add(bobble_primary);
+
+                                //Add secondary bobble
+                                rnd = rand.Next(0, Singleton.Instance.colorVariety);
+                                bobble_secondary = new NormalBobble(color[rnd])
                                 {
                                     Name = "NormalBobble",
                                     bobbleColor = normalBobbleColor[rnd],
-                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 150, Singleton.MAINSCREEN_HEIGHT - 75)
                                 };
+
+                                gameObjects.Add(bobble_secondary);
                             }
-
-                            gameObjects.Add(bobble_primary);
-
-                            //Add secondary bobble
-                            rnd = rand.Next(0, Singleton.Instance.colorVariety);
-                            bobble_secondary = new NormalBobble(color[rnd])
-                            {
-                                Name = "NormalBobble",
-                                bobbleColor = normalBobbleColor[rnd],
-                                Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 150, Singleton.MAINSCREEN_HEIGHT - 75)
-                            };
-
-                            gameObjects.Add(bobble_secondary);
 
                             timer = 0;
 
@@ -121,7 +134,13 @@ namespace PuzzleBobble
                             if (!Singleton.Instance.IsCeilingDowing)
                             {
                                 //Shoot Bobble
-                                ShootBobble();
+                                if(!IsBomb) ShootBobble(bobble_primary);
+                                else {
+                                    ShootBobble(bomb);
+                                    IsBomb = false;
+                                }
+                                Singleton.Instance.turnCounter++;
+
                                 currentShooterState = shooterState.shooterReload;
                             }
                             else
@@ -135,7 +154,7 @@ namespace PuzzleBobble
                                 }
                             }
                         }
-                        else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None)
+                        else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None && !IsBomb)
                         {
                             //TODO: Call SwapBobble Function
                             SwapBobble(bobble_primary, bobble_secondary, gameObjects);
@@ -148,7 +167,7 @@ namespace PuzzleBobble
                 }
 
                 //Remove Warning Text
-                if(gameTime.TotalGameTime.TotalSeconds - cur >= 1){
+                if(gameTime.TotalGameTime.TotalSeconds - cur >= 0.5f){
                     foreach (GameObject g in gameObjects){
                         if (g.Name.Equals("WarningText") && g.IsActive) g.IsActive = false;
                     }
@@ -158,16 +177,18 @@ namespace PuzzleBobble
             base.Update(gameTime, gameObjects);
         }
 
-        private void ShootBobble()
+        private void ShootBobble(Bobble bob)
         {
-            bobble_primary.Angle = (float)mouseAngle;
-            bobble_primary.Speed = 700;
+            bob.Angle = (float)mouseAngle;
+            bob.Speed = 700;
+            bob = null;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(body, Position, null, Color.White, 0f, new Vector2(body.Width / 2, body.Height / 2), 1f, SpriteEffects.None, 1f);
-            spriteBatch.Draw(_texture, Position, null, Color.White, (float)MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(body, Position, null, Color.White, 0f, new Vector2(body.Width / 2, body.Height / 2), 1f, SpriteEffects.None, 0.9f);
+            spriteBatch.Draw(_texture, Position, null, Color.White, MathHelper.ToRadians((float)-(mouseAngle + 90)), new Vector2(_texture.Width / 2, 0), 1f, SpriteEffects.None, 0.8f);
+            spriteBatch.Draw(insideBody, new Vector2(Position.X + body.Width / 3, Position.Y + body.Height / 3), null, Color.White, 0f, new Vector2(body.Width / 2, body.Height / 2), 1f, SpriteEffects.None, 0.7f);
             base.Draw(spriteBatch);
         }
 
