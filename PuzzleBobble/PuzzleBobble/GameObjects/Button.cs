@@ -47,9 +47,7 @@ namespace PuzzleBobble
                             Singleton.Instance.currentGameScene = Singleton.GameScene.OptionScene;
                             break;
                         case "ExtrasButton":
-                            //Debug the consequently click bug
                             Mouse.SetPosition(50,400);
-
                             Singleton.Instance.currentGameScene = Singleton.GameScene.ExtrasScene;
                             break;
                         case "BackMenuButton":

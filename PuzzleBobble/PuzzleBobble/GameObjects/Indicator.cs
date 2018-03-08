@@ -41,7 +41,6 @@ namespace PuzzleBobble
                 else if (indicatorIndex < j) colorDisplay[j] = ColorDisabled;
             }
                         
-
             base.Update(gameTime, gameObjects);
         }
 

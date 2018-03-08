@@ -118,7 +118,6 @@ namespace PuzzleBobble
                 isNeverShoot = false;
             }
 
-            //Check if still and not an initialized one
             if (Velocity == Vector2.Zero && !isInitialized && !isNeverShoot)
             {
                 destroyCluster(gameObjects, this, 3);
@@ -175,7 +174,6 @@ namespace PuzzleBobble
             ResetWaited(gameObjects);
         }
 
-        //Remove the solitared bobble which no holder
         public static bool destroySeperateHandler(List<GameObject> gameObjects, GameObject current)
         {
             Stack<GameObject> s = new Stack<GameObject>();
@@ -185,7 +183,6 @@ namespace PuzzleBobble
             {
                 current = s.Pop();
 
-                //Depth-First Search Method (Finding Root)
                 int j = (int)(current.Position.X - 200) / (Singleton.BOBBLE_SIZE / 2);
                 int i = (int)current.Position.Y / 44;
 
@@ -228,7 +225,6 @@ namespace PuzzleBobble
             return false;
         }
 
-        //Destroy if same-color cluster is more than 3
         public void destroyCluster(List<GameObject> gameObjects, GameObject current, int clusterSize)
         {
             ResetVisited(gameObjects);
@@ -252,13 +248,9 @@ namespace PuzzleBobble
 
             ResetVisited(gameObjects);
 
-            if (current.Velocity == Vector2.Zero)
-            {
-                destroySeparate(gameObjects);
-            }
+            if (current.Velocity == Vector2.Zero) destroySeparate(gameObjects);
         }
 
-        //Return the size of same-color cluster
         private int findCluster(List<GameObject> gameObjects, GameObject current)
         {
             int count = 0;
@@ -266,7 +258,6 @@ namespace PuzzleBobble
             Queue<GameObject> q = new Queue<GameObject>();
             q.Enqueue(current);
 
-            //Breadth-First Search Method
             while (q.Count != 0)
             {
                 current = q.Dequeue();

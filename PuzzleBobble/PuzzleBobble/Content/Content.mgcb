@@ -49,6 +49,12 @@
 /processorParam:TextureFormat=Color
 /build:backmenu_button.png
 
+#begin bgm.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:bgm.mp3
+
 #begin blmode.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -192,6 +198,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:bobble_yellow.png
+
+#begin burst.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:burst.wav
 
 #begin button_exit.png
 /importer:TextureImporter
@@ -451,6 +463,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:option_bg.png
+
+#begin shoot_normal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shoot_normal.wav
 
 #begin shooter_center.png
 /importer:TextureImporter

@@ -4,8 +4,6 @@ namespace PuzzleBobble
 {
     class Singleton
     {
-        //Global variable initializing
-
         public const int BOBBLE_SIZE = 50;
 
         public const int GAMESCREEN_WIDTH = BOBBLE_SIZE * 8;
@@ -16,7 +14,6 @@ namespace PuzzleBobble
 
         public const float SPLASH_TIME = 7f;
 
-        //For Scene Changing
         public enum GameScene
         {
             TitleScene,     //Splash Screen
@@ -28,7 +25,6 @@ namespace PuzzleBobble
 
         public GameScene currentGameScene;
 
-        //For Game Scene State
         public enum GameSceneState
         {
             None,           //Not on GameScene
@@ -39,7 +35,6 @@ namespace PuzzleBobble
 
         public GameSceneState currentGameState;
 
-        //For Player Status on Game Scene State
         public enum PlayerStatus
         {
             None,           //Not on End GameSceneState
@@ -57,8 +52,8 @@ namespace PuzzleBobble
 
         public int colorVariety = 4;
 
-        public float bgmSound = 99f;
-        public float sfxSound = 99f;
+        public float bgmSound = 0.9f;
+        public float sfxSound = 0.9f;
 
         public int bombTime = 7;
 

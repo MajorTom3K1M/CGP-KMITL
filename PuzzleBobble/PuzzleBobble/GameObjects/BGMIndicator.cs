@@ -13,7 +13,7 @@ namespace PuzzleBobble
 
         public override void Update(GameTime gameTime, List<GameObject> gameObjects)
         {
-            Singleton.Instance.bgmSound = indicatorIndex * 33;
+            Singleton.Instance.bgmSound = indicatorIndex * 0.3f;
             base.Update(gameTime, gameObjects);
         }
 

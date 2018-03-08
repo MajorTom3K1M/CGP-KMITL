@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PuzzleBobble
 {
     public class BobbleShooter : GameObject
     {
-        NormalBobble bobble_primary, bobble_secondary, bobble;
-        BombBobble bomb;
-        Point mousePosition;
-        MouseState mouseClickedState, previousMouseState, mouseState;
         public float Speed;
         public float Angle;
         public double mouseAngle;
         public Texture2D body, insideBody;
 
-        bool IsBomb;
+        NormalBobble bobble_primary, bobble_secondary;
+        BombBobble bomb;
+        Point mousePosition;
+        MouseState mouseClickedState, previousMouseState, mouseState;
 
+        bool IsBomb;
         double cur;
 
         Queue<GameObject> q = new Queue<GameObject>();
@@ -30,7 +31,6 @@ namespace PuzzleBobble
         {
             shooterReload,
             shooterReady
-
         }
 
         private shooterState currentShooterState;
@@ -63,7 +63,7 @@ namespace PuzzleBobble
                 switch (currentShooterState)
                 {
                     case shooterState.shooterReload:
-                        if (bobble_primary != null && Singleton.Instance.turnCounter < Singleton.Instance.bombTime)
+                        if (bobble_primary != null && !IsBomb)
                         {
                             foreach (GameObject g in gameObjects)
                             {
@@ -83,7 +83,11 @@ namespace PuzzleBobble
                                 bomb = new BombBobble(MainScene.bombbobble)
                                 {
                                     Name = "BombBobble",
-                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75)
+                                    Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2 - 25, Singleton.MAINSCREEN_HEIGHT - 75),
+                                    SoundEffects = new Dictionary<string, SoundEffectInstance>()
+                                    {
+                                        {"Burst", MainScene.burst }
+                                    }
                                 };
                                 Singleton.Instance.turnCounter = 0;
                                 gameObjects.Add(bomb);
@@ -133,10 +137,15 @@ namespace PuzzleBobble
                         {
                             if (!Singleton.Instance.IsCeilingDowing)
                             {
-                                //Shoot Bobble
-                                if(!IsBomb) ShootBobble(bobble_primary);
+                                if(!IsBomb){
+                                    ShootBobble(bobble_primary);
+                                    SoundEffects["ShootNormal"].Volume = Singleton.Instance.sfxSound;
+                                    SoundEffects["ShootNormal"].Play();
+                                } 
                                 else {
                                     ShootBobble(bomb);
+                                    SoundEffects["ShootNormal"].Volume = Singleton.Instance.sfxSound;
+                                    SoundEffects["ShootNormal"].Play();
                                     IsBomb = false;
                                 }
                                 Singleton.Instance.turnCounter++;
@@ -145,7 +154,6 @@ namespace PuzzleBobble
                             }
                             else
                             {
-                                //TODO: Show WAIT caution
                                 foreach(GameObject g in gameObjects){
                                     if (g.Name.Equals("WarningText") && !g.IsActive){
                                         cur = gameTime.TotalGameTime.TotalSeconds;
@@ -156,7 +164,6 @@ namespace PuzzleBobble
                         }
                         else if (mouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released && Singleton.Instance.currentGameState == Singleton.GameSceneState.Playing && Singleton.Instance.currentPlayerStatus == Singleton.PlayerStatus.None && !IsBomb)
                         {
-                            //TODO: Call SwapBobble Function
                             SwapBobble(bobble_primary, bobble_secondary, gameObjects);
                             NormalBobble temp;
                             temp = bobble_primary;
@@ -165,8 +172,6 @@ namespace PuzzleBobble
                         }
                         break;
                 }
-
-                //Remove Warning Text
                 if(gameTime.TotalGameTime.TotalSeconds - cur >= 0.5f){
                     foreach (GameObject g in gameObjects){
                         if (g.Name.Equals("WarningText") && g.IsActive) g.IsActive = false;

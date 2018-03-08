@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PuzzleBobble
 {
@@ -37,7 +34,6 @@ namespace PuzzleBobble
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, Position, Color.White);
-
             base.Draw(spriteBatch);
         }
 
@@ -69,6 +65,8 @@ namespace PuzzleBobble
                     }
                 }
             }
+            SoundEffects["Burst"].Volume = Singleton.Instance.sfxSound;
+            SoundEffects["Burst"].Play();
             this.IsActive = false;
         }
 

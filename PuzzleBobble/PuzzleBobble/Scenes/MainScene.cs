@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace PuzzleBobble
 {
@@ -11,19 +13,16 @@ namespace PuzzleBobble
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+#region Global Variable
         public static Texture2D bobble_red, bobble_green, bobble_blue, bobble_yellow, bobble_white, bobble_turquoise, bobble_orange, bobble_purple, bombbobble;
-        Texture2D rectTexture, mouseNormal, mouseHovered;
+        public static SoundEffectInstance burst;
 
+        Texture2D rectTexture, mouseNormal;
         Texture2D pointer, bobble_shooter, shooter_inside, loseCollider;
-
         Texture2D cave, splashScreen, game_bg, gameover_panel, win_panel, warning;
-
         Texture2D menuBG, menuParallax, menuTitle;
         Texture2D buttonNew, buttonOption, buttonExtras, buttonExit, buttonBack, backmenu_button;
-
-        //Option Menu
         Texture2D optionBG, optionParallax, levelIndicator, speed30, speed25, speed20, color4, color6, color8;
-
         Texture2D extrasBG, hcMode, blMode, nmMode;
 
         List<GameObject> gameObjects;
@@ -33,16 +32,13 @@ namespace PuzzleBobble
 
         Random rnd = new Random();
 
-        //Splash Screen Waiting
         double currentGameTime;
         bool isFirstTime;
-
-        //Menu Screen Parallax
         int parallaxHelper;
         bool isAscend;
 
-        bool hasAlreadyAdded;
-
+        Song bgm;
+#endregion
         public MainScene()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -52,7 +48,6 @@ namespace PuzzleBobble
 
 		protected override void Initialize()
 		{
-            // TODO: Add your initialization logic here
             graphics.PreferredBackBufferWidth = Singleton.MAINSCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = Singleton.MAINSCREEN_HEIGHT;
             graphics.ApplyChanges();
@@ -60,8 +55,6 @@ namespace PuzzleBobble
             Singleton.Instance.currentGameScene = Singleton.GameScene.TitleScene;
             Singleton.Instance.currentGameState = Singleton.GameSceneState.None;
 
-
-            //Splash Screen
             isFirstTime = true;
 
             parallaxHelper = 0;
@@ -72,7 +65,6 @@ namespace PuzzleBobble
 
 		protected override void LoadContent()
 		{
-			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
             gameObjects = new List<GameObject>();
             rectTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
@@ -81,33 +73,31 @@ namespace PuzzleBobble
             for (int i = 0; i < dataRect.Length; ++i) dataRect[i] = Color.White;
             rectTexture.SetData(dataRect);
 
-            //Splash Screen
+#region Import Content
+            bgm = this.Content.Load<Song>("bgm");
+            burst = this.Content.Load<SoundEffect>("burst").CreateInstance();
+
             splashScreen = this.Content.Load<Texture2D>("splashScreen");
 
-            //Menu Screen
-            menuBG = this.Content.Load<Texture2D>("menu_bg");
-            menuTitle = this.Content.Load<Texture2D>("menu_title");
-            menuParallax = this.Content.Load<Texture2D>("menu_parallax");
-
-            //Import Option Sprite
             buttonNew = this.Content.Load<Texture2D>("button_new");
             buttonOption = this.Content.Load<Texture2D>("button_option");
             buttonExtras = this.Content.Load<Texture2D>("button_ext");
             buttonExit = this.Content.Load<Texture2D>("button_exit");
 
+            menuBG = this.Content.Load<Texture2D>("menu_bg");
+            menuTitle = this.Content.Load<Texture2D>("menu_title");
+            menuParallax = this.Content.Load<Texture2D>("menu_parallax");
+
             warning = this.Content.Load<Texture2D>("warning_text");
 
             mouseNormal = this.Content.Load<Texture2D>("mousepointer");
-            //mouseHovered = this.Content.Load<Texture2D>("mousehover");
 
-            //Import Sprite for GameScreen BG
             //Reference: https://www.reddit.com/r/PixelArt/comments/61xvdq/ocwipcc_a_parallax_cave_background_i_made/
             cave = this.Content.Load<Texture2D>("cave");
 
             //Reference: http://steamtradingcards.wikia.com/wiki/File:Amygdala_Background_Cave_Background.jpg
             game_bg = this.Content.Load<Texture2D>("game_bg");
 
-            //Import Sprite of Bobble
             bobble_red = this.Content.Load<Texture2D>("bobble_red");
             bobble_blue = this.Content.Load<Texture2D>("bobble_blue");
             bobble_green = this.Content.Load<Texture2D>("bobble_green");
@@ -118,20 +108,16 @@ namespace PuzzleBobble
             bobble_orange = this.Content.Load<Texture2D>("bobble_orange");
             bombbobble = this.Content.Load<Texture2D>("bobble_bomb");
 
-            //Import GameFont
             Singleton.Instance.gameFont = this.Content.Load<SpriteFont>("GameFont");
 
-            //Import Sprite of Shooter
             bobble_shooter = this.Content.Load<Texture2D>("bobble_shooter");
             shooter_inside = this.Content.Load<Texture2D>("shooter_center");
             pointer = this.Content.Load<Texture2D>("arrow");
             loseCollider = this.Content.Load<Texture2D>("lose_collider");
 
-            //Import Game Over Panel
             gameover_panel = this.Content.Load<Texture2D>("gameover_panel");
             win_panel = this.Content.Load<Texture2D>("win_panel");
 
-            //Import Option Menu Graphics
             optionBG = this.Content.Load<Texture2D>("option_bg");
             optionParallax = this.Content.Load<Texture2D>("star_parallax");
             levelIndicator = this.Content.Load<Texture2D>("level_indicator");
@@ -145,19 +131,16 @@ namespace PuzzleBobble
             buttonBack = this.Content.Load<Texture2D>("back_button");
 			backmenu_button = this.Content.Load<Texture2D>("backmenu_button");
 
-            //Import Extras Menu Graphics
             extrasBG = this.Content.Load<Texture2D>("extras_bg");
             hcMode = this.Content.Load<Texture2D>("hcmode");
             blMode = this.Content.Load<Texture2D>("blmode");
             nmMode = this.Content.Load<Texture2D>("nmmode");
-
+#endregion
 
             switch (Singleton.Instance.currentGameScene)
             {
                 case Singleton.GameScene.MenuScene:
-                    hasAlreadyAdded = false;
 
-                    //TODO: Add 'New Game' Button
                     gameObjects.Add(
                         new Button(buttonNew)
                         {
@@ -166,7 +149,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //TODO: Add 'Option' Button
                     gameObjects.Add(
                         new Button(buttonOption)
                         {
@@ -175,7 +157,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //TODO: Add 'Extras' Button
                     gameObjects.Add(
                         new Button(buttonExtras)
                         {
@@ -184,7 +165,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //TODO: Add 'Exit' Button
                     gameObjects.Add(
                         new Button(buttonExit)
                         {
@@ -196,7 +176,7 @@ namespace PuzzleBobble
 
                     break;
                 case Singleton.GameScene.OptionScene:
-                    //TODO: Add 'Back' Button
+                    
                     gameObjects.Add(
                         new Button(buttonBack)
                         {
@@ -204,28 +184,26 @@ namespace PuzzleBobble
                             Position = new Vector2(20, 20)
                         }
                     );
-                    //TODO: Add 'BGM' Button/Slider
+
                     gameObjects.Add(
                         new BGMIndicator(levelIndicator)
                         {
                             Name = "BGMIndicator",
                             Position = new Vector2(560, 235),
-                            indicatorIndex = (int)(Singleton.Instance.bgmSound / 33)
+                            indicatorIndex = (int)(Singleton.Instance.bgmSound / 0.3f)
                         }
                     );
 
-                    //TODO: Add 'FX' Button/Slider
                     gameObjects.Add(
                         new SFXIndicator(levelIndicator)
                         {
                             Name = "SFXIndicator",
                             Position = new Vector2(560, 280),
                             ColorDisplayed = Color.LightBlue,
-                            indicatorIndex = (int)(Singleton.Instance.sfxSound / 33)
+                            indicatorIndex = (int)(Singleton.Instance.sfxSound / 0.3f)
                         }
                     );
 
-                    //TODO: Add 'Speed' Selector
                     gameObjects.Add(
                         new SpeedSelector(levelIndicator)
                         {
@@ -236,7 +214,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //TODO: Add 'Color' Selector
                     gameObjects.Add(
                         new ColorSelector(levelIndicator)
                         {
@@ -249,7 +226,7 @@ namespace PuzzleBobble
 
                     break;
                 case Singleton.GameScene.ExtrasScene:
-                    //Back Button
+                    
                     gameObjects.Add(
                         new Button(buttonBack)
                         {
@@ -258,7 +235,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Hardcore Panel
                     gameObjects.Add(
                         new Button(hcMode)
                         {
@@ -267,7 +243,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Blind Panel
                     gameObjects.Add(
                         new Button(blMode)
                         {
@@ -276,7 +251,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Nightmare Panel
                     gameObjects.Add(
                         new Button(nmMode)
                         {
@@ -285,7 +259,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Add Warning
                     gameObjects.Add(
                         new Window(warning)
                         {
@@ -293,9 +266,10 @@ namespace PuzzleBobble
                             Position = new Vector2(551 + (nmMode.Width / 2) - warning.Width / 2, 238 + nmMode.Height)
                         }
                     );
+
                     break;
                 case Singleton.GameScene.GameScene:
-                    //Add Lose Collider
+
                     gameObjects.Add(
                         new LoseCollider(loseCollider)
                         {
@@ -304,18 +278,20 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Add Shooter
                     gameObjects.Add(
                         new BobbleShooter(pointer)
                         {
                             Name = "Shooter",
                             Position = new Vector2(Singleton.MAINSCREEN_WIDTH / 2, Singleton.MAINSCREEN_HEIGHT - 50),
                             body = bobble_shooter,
-                            insideBody = shooter_inside
+                            insideBody = shooter_inside,
+                            SoundEffects = new Dictionary<string, SoundEffectInstance>()
+                            {
+                                {"ShootNormal", Content.Load<SoundEffect>("shoot_normal").CreateInstance() },
+                            }
                         }
                     );
 
-                    //Add Score Displayer
                     gameObjects.Add(
                         new ScoreDisplayer(buttonNew)
                         {
@@ -324,7 +300,7 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Initial Bobble Pattern
+#region Initial Bobble Pattern
                     for (int i = 0; i < 4; ++i)
                     {
                         for (int j = (i % 2); j < 15; j += 2)
@@ -381,7 +357,6 @@ namespace PuzzleBobble
                                     );
                                 }
                             }
-                            //Row 3-4
                             else if (i < 4)
                             {
                                 if (j < 3)
@@ -435,8 +410,7 @@ namespace PuzzleBobble
                             }
                         }
                     }
-
-                    //Add an inactive Game Over Panel
+#endregion
                     gameObjects.Add(
                         new Window(gameover_panel)
                         {
@@ -446,13 +420,12 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Add an inactive Win Panel
                     gameObjects.Add(
                         new Window(win_panel)
                         {
                             Name = "WinWindow",
                             Position = new Vector2(0, 0),
-                            IsActive = false
+                            IsActive = false 
                         }
                     );
 
@@ -465,7 +438,6 @@ namespace PuzzleBobble
                         }
                     );
 
-                    //Add Warning
                     gameObjects.Add(
                         new Window(warning)
                         {
@@ -495,31 +467,24 @@ namespace PuzzleBobble
             {
                 if (gameObjects[i].IsActive) gameObjects[i].Update(gameTime, gameObjects);
             }
-			// TODO: Add your update logic here
+
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
-                    //TODO: Sleep for 7 seconds
                     if (isFirstTime){
                         currentGameTime = gameTime.TotalGameTime.TotalSeconds;
                         isFirstTime = false;
                     } 
 
-                    if (gameTime.TotalGameTime.TotalSeconds - currentGameTime >= Singleton.SPLASH_TIME){
-                        //Change Scene
-                        Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
-                    }
+                    if (gameTime.TotalGameTime.TotalSeconds - currentGameTime >= Singleton.SPLASH_TIME) Singleton.Instance.currentGameScene = Singleton.GameScene.MenuScene;
 
                     break;
                 case Singleton.GameScene.GameScene:
                     switch(Singleton.Instance.currentGameState){
                         case Singleton.GameSceneState.Start:
-                            //TODO: Logic on Each Move
                             isFirstTime = true;
                             Singleton.Instance.currentGameState = Singleton.GameSceneState.Playing;
-
                             break;
                         case Singleton.GameSceneState.Playing:
-                            //Celling Down Logic
                             if (isFirstTime){
                                 currentGameTime = gameTime.TotalGameTime.TotalSeconds;
                                 isFirstTime = false;
@@ -531,8 +496,7 @@ namespace PuzzleBobble
                                 currentGameTime = gameTime.TotalGameTime.TotalSeconds;
                             }
                             else if (Math.Round(gameTime.TotalGameTime.TotalSeconds - currentGameTime) >= Singleton.Instance.ceilingTime - 1) Singleton.Instance.IsCeilingDowing = true;
-
-                            //Game Over Logic
+#region Game Over
                             int count = 0;
 
                             foreach(GameObject g in gameObjects){
@@ -542,13 +506,12 @@ namespace PuzzleBobble
                             if (count == 0){
                                 Singleton.Instance.currentPlayerStatus = Singleton.PlayerStatus.Won;
                                 Singleton.Instance.currentGameState = Singleton.GameSceneState.End;
-                            } 
-
+                            }
+#endregion
                             break;
                         case Singleton.GameSceneState.End:
                             switch(Singleton.Instance.currentPlayerStatus){
                                 case Singleton.PlayerStatus.Won:
-                                    //TODO: Showing winning graphics
                                     foreach (GameObject g in gameObjects)
                                     {
                                         if (g.Name.Equals("WinWindow") && !g.IsActive) g.IsActive = true;
@@ -556,7 +519,6 @@ namespace PuzzleBobble
                                     }
                                     break;
                                 case Singleton.PlayerStatus.Lost:
-                                    //TODO: Showing losing graphics
                                     foreach (GameObject g in gameObjects)
                                     {
                                         if (g.Name.Equals("LoseWindow") && !g.IsActive) g.IsActive = true;
@@ -577,27 +539,19 @@ namespace PuzzleBobble
 		protected override void Draw(GameTime gameTime)
 		{
 			graphics.GraphicsDevice.Clear(Color.Black);
-
             numObj = gameObjects.Count;
 
-            //TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-
-            //Mouse Cursor
+#region Mouse Cursor
             spriteBatch.Draw(mouseNormal, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), null, Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
-            //if(!Singleton.Instance.IsHovered) spriteBatch.Draw(mouseNormal, new Vector2(Mouse.GetState().X, Mouse.GetState().Y) , null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            //else spriteBatch.Draw(mouseHovered, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                
-            //Draw GameScreen
+#endregion
             switch(Singleton.Instance.currentGameScene){
                 case Singleton.GameScene.TitleScene:
-                    //TODO: Draw Splash Screen
                     spriteBatch.Draw(splashScreen, Vector2.Zero, null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                     break;
                 case Singleton.GameScene.MenuScene:
                     spriteBatch.Draw(menuBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
-                    //Parallax Function
                     if(parallaxHelper > 250) isAscend = false;
                     else isAscend |= parallaxHelper < 1;
                     
@@ -606,13 +560,12 @@ namespace PuzzleBobble
                         else parallaxHelper--;
                     } 
                     spriteBatch.Draw(menuParallax, Vector2.Zero, null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
-
                     spriteBatch.Draw(menuTitle, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
 
                     break;
                 case Singleton.GameScene.OptionScene:
                     spriteBatch.Draw(optionBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-                    //Parallax Function
+
                     if (parallaxHelper > 250) isAscend = false;
                     else isAscend |= parallaxHelper < 1;
 
@@ -622,6 +575,7 @@ namespace PuzzleBobble
                         else parallaxHelper -= 2;
                     }
                     spriteBatch.Draw(optionParallax, new Vector2(0, 150), null, new Color(Color.White, parallaxHelper), 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
+
                     break;
                 case Singleton.GameScene.ExtrasScene:
                     spriteBatch.Draw(extrasBG, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
@@ -630,9 +584,10 @@ namespace PuzzleBobble
                     spriteBatch.Draw(game_bg, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                     spriteBatch.Draw(cave, new Vector2((Singleton.MAINSCREEN_WIDTH - Singleton.GAMESCREEN_WIDTH) / 2, 0f), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
-                    //Draw Ceiling
+#region Ceiling
                     spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, Singleton.Instance.ceilingLevel * 44), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
-
+#endregion Ceiling
+#region Blind Mode
                     if(Singleton.Instance.IsBlindMode){
                         if (parallaxHelper > 250) isAscend = false;
                         else isAscend |= parallaxHelper < 1;
@@ -644,17 +599,16 @@ namespace PuzzleBobble
                         }
                         spriteBatch.Draw(rectTexture, new Rectangle(200, 0, 400, 600), null, new Color(Color.Black, parallaxHelper), 0f, Vector2.Zero, SpriteEffects.None, 0.15f);
                     }
+#endregion
                     break;
             }
 
-            //Draw GameObject
             for (int i = 0; i < numObj; i++)
             {
                 if (gameObjects[i].IsActive) gameObjects[i].Draw(spriteBatch);
             }
 
             spriteBatch.End();
-
             graphics.BeginDraw();
 
 			base.Draw(gameTime);
@@ -662,17 +616,22 @@ namespace PuzzleBobble
 
         protected void Reset()
         {
-            //Reset all GameObject
             foreach (GameObject obj in gameObjects)
             {
                 obj.Reset();
             }
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = Singleton.Instance.bgmSound;
+            MediaPlayer.Play(bgm);
+
             Singleton.Instance.ceilingLevel = 0;
             Singleton.Instance.turnCounter = 0;
+
+            if (Singleton.Instance.ceilingTime < 20) Singleton.Instance.ceilingTime = 20;
         }
 
         protected void CeilingDown(){
-            //TODO: Floor down the celling 2 steps 
             foreach(GameObject g in gameObjects){
                 if (g.Name.Equals("NormalBobble") && g.IsActive){
                     Bobble obj = g as Bobble;
@@ -687,7 +646,6 @@ namespace PuzzleBobble
 
         public static void CeilingUp(List<GameObject> gameObjects)
         {
-            //TODO: Floor down the celling 2 steps 
             foreach (GameObject g in gameObjects)
             {
                 if (g.Name.Equals("NormalBobble") && g.IsActive)
@@ -696,7 +654,9 @@ namespace PuzzleBobble
                     if (!obj.isNeverShoot || obj.isInitialized) g.Position.Y -= 88;
                 }
             }
+
             Singleton.Instance.ceilingLevel -= 2;
+
             for (int i = 0; i < gameObjects.Count; ++i)
             {
                 if (gameObjects[i].Name.Equals("NormalBobble") && !gameObjects[i].IsActive) gameObjects.RemoveAt(i);

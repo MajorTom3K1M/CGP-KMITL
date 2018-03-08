@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace PuzzleBobble
 {
@@ -17,6 +18,8 @@ namespace PuzzleBobble
         public Vector2 Position;
         public float Rotation;
         public Vector2 Scale;
+
+        public Dictionary<string, SoundEffectInstance> SoundEffects;
 
         public NormalBobble.BobbleColor bobbleColor;
 
@@ -61,7 +64,6 @@ namespace PuzzleBobble
         }
 
         #region Collision
-        //TODO: Collision Detection
         protected bool IsTouchingLeft(GameObject gameObject)
         {
             return this.Rectangle.Right > gameObject.Rectangle.Left &&
