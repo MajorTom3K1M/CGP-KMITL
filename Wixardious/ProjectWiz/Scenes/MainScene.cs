@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +10,9 @@ namespace ProjectWiz
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
+
+        List<GameObject> _gameObjects;
+        int _numObject;
 
         MainScene splash, menu;
 
@@ -50,10 +53,14 @@ namespace ProjectWiz
                 //case Singleton.GameScene.End: Splash.UpdateSplash(gameTime); break;
             }
 
+            Reset();
+
 		}
 
 		protected override void Update(GameTime gameTime)
 		{
+            _numObject = _gameObjects.Count;
+
 			//Scene Update
             switch(Singleton.Instance.curScene){
                 case Singleton.GameScene.Splash: splash.Update(gameTime); break;
@@ -63,11 +70,18 @@ namespace ProjectWiz
                 //case Singleton.GameScene.End: Splash.UpdateSplash(gameTime); break;
             }
 
+            for (int i = 0; i < _numObject; i++)
+            {
+                if (_gameObjects[i].IsActive) _gameObjects[i].Update(gameTime, _gameObjects);
+            }
+
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
+            _numObject = _gameObjects.Count;
+
             graphics.GraphicsDevice.Clear(Color.Black);
 
             //Scene Draw
@@ -80,8 +94,23 @@ namespace ProjectWiz
                 //case Singleton.GameScene.End: Splash.UpdateSplash(gameTime); break;
             }
 
+            for (int i = 0; i < _numObject; i++)
+            {
+                if (_gameObjects[i].IsActive) _gameObjects[i].Draw(spriteBatch);
+            }
+
 			base.Draw(gameTime);
 		}
+
+        protected void Reset()
+        {
+            _gameObjects.Clear();
+
+            foreach (GameObject s in _gameObjects)
+            {
+                s.Reset();
+            }
+        }
 
         public void WaitForSecond(float second, GameTime gameTime)
         {

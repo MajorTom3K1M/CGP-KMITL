@@ -42,17 +42,21 @@
     <Compile Include="Scenes\MainScene.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Scenes\SplashScreen.cs" />
-    <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="Scenes\MenuScene.cs" />
     <Compile Include="Managers\SceneManager.cs" />
     <Compile Include="Managers\AnimationManager.cs" />
     <Compile Include="Models\Animation.cs" />
-    <Compile Include="Modules\StatusModule.cs" />
-    <Compile Include="Modules\SpriteRenderer.cs" />
-    <Compile Include="Modules\Rigidbody.cs" />
-    <Compile Include="Modules\Animator.cs" />
-    <Compile Include="Modules\AudioSource.cs" />
+    <Compile Include="Components\StatusModule.cs" />
+    <Compile Include="Components\SpriteRenderer.cs" />
+    <Compile Include="Components\Rigidbody.cs" />
+    <Compile Include="Components\Animator.cs" />
+    <Compile Include="Components\AudioSource.cs" />
     <Compile Include="GameObjects\Actor.cs" />
+    <Compile Include="Components\Transform.cs" />
+    <Compile Include="GameEngine\Interfaces\ITransform.cs" />
+    <Compile Include="GameEngine\Interfaces\ILoadable.cs" />
+    <Compile Include="GameEngine\GameObjects\_GameObject.cs" />
+    <Compile Include="GameEngine\GameObjects\GameObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
@@ -105,7 +109,10 @@
     <Folder Include="Scripts\" />
     <Folder Include="Managers\" />
     <Folder Include="Models\" />
-    <Folder Include="Modules\" />
+    <Folder Include="Components\" />
+    <Folder Include="GameEngine\" />
+    <Folder Include="GameEngine\Interfaces\" />
+    <Folder Include="GameEngine\GameObjects\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
