@@ -43,8 +43,9 @@
     <Compile Include="Scripts\SceneManager.cs" />
     <Compile Include="GameObjects\StatusModule.cs" />
     <Compile Include="Singleton.cs" />
-    <Compile Include="Scenes\Splash.cs" />
+    <Compile Include="Scenes\SplashScreen.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="Scenes\MenuScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

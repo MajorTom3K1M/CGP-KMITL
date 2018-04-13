@@ -1,10 +1,28 @@
 ﻿using System;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace ProjectWiz
 {
-    public class MenuScene
-    {
-        public MenuScene()
+    public class MenuScene : MainScene
+	{
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+
+        protected override void LoadContent()
         {
+            
         }
-    }
+
+        protected override void Update(GameTime gameTime)
+		{
+
+		}
+
+        protected override void Draw(GameTime gameTime)
+		{
+			
+		}
+	}
 }
