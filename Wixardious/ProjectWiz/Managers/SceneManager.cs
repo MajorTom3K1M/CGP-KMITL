@@ -1,5 +1,6 @@
 ﻿using System;
-namespace ProjectWiz
+
+namespace ProjectWiz.Managers
 {
     public class SceneManager
 	{

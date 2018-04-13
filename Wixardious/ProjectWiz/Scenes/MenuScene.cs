@@ -12,7 +12,7 @@ namespace ProjectWiz
 
         protected override void LoadContent()
         {
-            
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)

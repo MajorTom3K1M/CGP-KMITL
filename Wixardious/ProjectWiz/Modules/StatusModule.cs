@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ProjectWiz
+namespace ProjectWiz.Modules
 {
-    public class StatusModule
+    public class StatusModule : GameObject
     {
         private float Health;
         private float Mana;

@@ -10,9 +10,16 @@ namespace ProjectWiz
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        #region Content
+
+        Texture2D teamLogo;
+
+        #endregion
+
         protected override void LoadContent()
         {
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            teamLogo = base.Content.Load<Texture2D>("majox_logo");
         }
 
         protected override void Update(GameTime gameTime)
