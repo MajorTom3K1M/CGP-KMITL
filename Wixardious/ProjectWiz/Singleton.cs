@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
 
 namespace ProjectWiz
 {
@@ -38,9 +40,11 @@ namespace ProjectWiz
         public GameState curState;
         public PlayerStatus curPlayerState;
 
-        private static Singleton instance;
+        public KeyboardState PreviousKey, CurrentKey;
 
         private Singleton() { }
+
+        private static Singleton instance;
 
         public static Singleton Instance
         {

@@ -20,11 +20,11 @@ namespace ProjectWiz
 	static class Program
 #endif
 	{
-		private static MainScene game;
+		private static MainGame game;
 
 		internal static void RunGame()
 		{
-            game = new MainScene();
+            game = new MainGame();
 			game.Run();
 #if !__IOS__ && !__TVOS__
 			game.Dispose();
