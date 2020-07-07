@@ -1,5 +1,5 @@
 # CGP-KMITL
- Computer Game Programing Course KMITL
+ Computer Game Programing Course Project KMITL
  
 # 1. GEMyth (PuzzleBobble) 
 <p align="center">
