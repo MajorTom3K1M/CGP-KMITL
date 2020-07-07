@@ -71,7 +71,10 @@ Separate into 2 states which are Normal State and Active State
   <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex4.png">
 </p>
 
-
+- Active State, likes Combat Mode, Turn State, AI
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex5.png">
+</p>
 
 #### Game Level
 In Alpha Version, 2 levels are available to play which are these following...
