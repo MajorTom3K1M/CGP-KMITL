@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
@@ -13,71 +12,83 @@ namespace ProjectWizardous
 
         public Dictionary<string, SoundEffectInstance> SoundEffects;
 
-        //Transformation
+        public string Name, SubName;
+        //SubName used to define Object type or other label
+        public int Qty;
+
         public Vector2 Position;
+
         public float Rotation;
         public Vector2 Scale;
 
-        //Basic Physics
         public Vector2 Velocity;
         public Vector2 Acceleration;
 
-        public string Name;
         public bool IsActive;
+
+        //Shooting Parameter
+        public float ShootAngle;
+        public float ShootPower;
 
         public Rectangle Rectangle
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, Viewport.Width, Viewport.Height);
+                return new Rectangle((int)Position.X - Viewport.Width / 2,
+                                    (int)Position.Y - Viewport.Height / 2,
+                                    Viewport.Width,
+                                    Viewport.Height);
             }
         }
 
         public Rectangle Viewport;
 
-        #endregion
-
-        #region PROTECTED_VARIABLES
-
-        protected Texture2D _texture;
-
-        protected InputComponent _input;
-        protected PhysicsComponent _physics;
-        protected GraphicsComponent _graphics;
+        public InputComponent Input;
+        public PhysicsComponent Physics;
+        public GraphicsComponent Graphics;
 
         #endregion
 
         public GameObject(InputComponent input, PhysicsComponent physics, GraphicsComponent graphics)
         {
+            Input = input;
+            Physics = physics;
+            Graphics = graphics;
+
             Position = Vector2.Zero;
             Scale = Vector2.One;
-            Acceleration = Vector2.Zero;
-            Velocity = Vector2.Zero;
             Rotation = 0f;
+            Velocity = Vector2.Zero;
+            Acceleration = Vector2.Zero;
             IsActive = true;
-
-            _input = input;
-            _physics = physics;
-            _graphics = graphics;
         }
 
-        public virtual void Update(GameTime gameTime, List<GameObject> gameObjects)
+        public void Update(GameTime gameTime, List<GameObject> gameObjects)
         {
-            if (_input != null) _input.Update(gameTime, gameObjects, this);
-            if (_physics != null) _physics.Update(gameTime, gameObjects, this);
-            if (_graphics != null) _graphics.Update(gameTime, gameObjects, this);
+            if (Input != null) Input.Update(gameTime, gameObjects, this);
+            if (Physics != null) Physics.Update(gameTime, gameObjects, this);
+            if (Graphics != null) Graphics.Update(gameTime, gameObjects, this);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            if (_graphics != null) _graphics.Draw(spriteBatch, this);
+            if (Graphics != null) Graphics.Draw(spriteBatch, this);
         }
 
-        public virtual void Reset()
+        public void Reset()
         {
-            if (_input != null) _input.Reset();
-            if (_physics != null) _physics.Reset();
-            if (_graphics != null) _graphics.Reset();
+            if (Input != null) Input.Reset();
+            if (Physics != null) Physics.Reset();
+            if (Graphics != null) Graphics.Reset();
+        }
+
+        public void SendMessage(int message, Component sender)
+        {
+            //to broadcast message to all components
+            //using code to know message 
+            if (Input != null) Input.ReceiveMessage(message, sender);
+            if (Physics != null) Physics.ReceiveMessage(message, sender);
+            if (Graphics != null) Graphics.ReceiveMessage(message, sender);
         }
 
         public object Clone()
@@ -85,11 +96,5 @@ namespace ProjectWizardous
             return this.MemberwiseClone();
         }
 
-        public void SendMessage(int message)
-        {
-            if (_input != null) _input.ReceiveMessage(message);
-            if (_physics != null) _physics.ReceiveMessage(message);
-            if (_graphics != null) _graphics.ReceiveMessage(message);
-        }
     }
 }

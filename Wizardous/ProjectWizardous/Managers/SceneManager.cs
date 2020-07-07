@@ -18,6 +18,8 @@ namespace ProjectWizardous
         SpriteFont font;
         Texture2D blankTexture;
 
+        public ContentManager Content;
+
         bool isInitialized;
 
         bool traceEnabled;
@@ -25,6 +27,13 @@ namespace ProjectWizardous
         #endregion
 
         #region Properties
+
+        /*
+        public ContentManager Content
+        {
+            get { return Content; }
+        }
+        */
 
         public SpriteBatch SpriteBatch
         {
@@ -58,11 +67,11 @@ namespace ProjectWizardous
         protected override void LoadContent()
         {
             // Load content belonging to the scene manager.
-            ContentManager content = Game.Content;
+            Content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = content.Load<SpriteFont>("menufont");
-            blankTexture = content.Load<Texture2D>("rectTexture");
+            font = Content.Load<SpriteFont>("Fonts/menufont");
+            blankTexture = Content.Load<Texture2D>("Images/Rect_Texture");
 
             // Tell each of the scenes to load their content.
             foreach (GameScene scene in scenes)

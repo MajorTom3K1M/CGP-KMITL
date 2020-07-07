@@ -31,9 +31,9 @@ namespace ProjectWizardous
             Components.Add(sceneManager);
 
             //TODO: Add new screen here
+            //sceneManager.AddScreen(new SplashScreen());
             sceneManager.AddScreen(new SplashScreen());
         }
-
 
         #endregion
 

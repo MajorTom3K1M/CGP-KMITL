@@ -9,17 +9,18 @@ using System.Linq;
 
 namespace ProjectWizardous
 {
-    public class GraphicsComponent
+    public class GraphicsComponent : Component
     {
         protected Dictionary<string, Animation> _animations;
         protected AnimationManager _animationManager;
         protected Texture2D _texture;
+        public Color color = Color.White;
 
-        public GraphicsComponent(Game currentScene)
+        public GraphicsComponent(GameScene currentScene)
         {
         }
 
-        public virtual void Update(GameTime gameTime, List<GameObject> gameObjects, GameObject parent)
+        public override void Update(GameTime gameTime, List<GameObject> gameObjects, GameObject parent)
         {
             if (_animationManager != null)
             {
@@ -27,19 +28,19 @@ namespace ProjectWizardous
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, GameObject parent)
+        public override void Draw(SpriteBatch spriteBatch, GameObject parent)
         {
             if (_animationManager == null)
             {
                 spriteBatch.Draw(_texture,
                 parent.Position,
                 parent.Viewport,
-                Color.White,
+                color,
                 parent.Rotation,
                 parent.Viewport.Center.ToVector2(),
                 parent.Scale,
                 SpriteEffects.None,
-                0);
+                0.55f);
             }
             else
             {
@@ -47,14 +48,12 @@ namespace ProjectWizardous
             }
         }
 
-        public virtual void Reset()
+        public override void Reset()
         {
             if (_animations != null)
             {
                 _animationManager = new AnimationManager(_animations.First().Value);
             }
         }
-
-        public virtual void ReceiveMessage(int message) { }
     }
 }

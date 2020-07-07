@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace ProjectWizardous
@@ -14,6 +15,31 @@ namespace ProjectWizardous
         public KeyboardState PreviousKey, CurrentKey;
 
         public List<GameObject> gameObjects = new List<GameObject>();
+
+        public List<Platform> platforms = new List<Platform>();
+
+        public float shootAngle = 75;
+        public float shootPower;
+
+        public Vector2 CameraPosition;
+
+        public float Damage = 40f;
+
+        public float Perk1DecreaseCooldown = 0;
+
+        public GameObject[] PlayerItem = new GameObject[4];
+
+        public enum ControlState
+        {
+            NormalState,
+            ActiveState,
+            ShopState,
+            MessageBox,
+            PauseState,
+            GameOver
+        }
+
+        public ControlState currentControlState;
 
         private Singleton() { }
 

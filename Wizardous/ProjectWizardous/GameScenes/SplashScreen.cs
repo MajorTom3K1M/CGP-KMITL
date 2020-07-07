@@ -45,8 +45,8 @@ namespace ProjectWizardous
                 content = new ContentManager(SceneManager.Game.Services, "Content");
 
             //Load Content Here
-            backgroundTexture = content.Load<Texture2D>("rectTexture");
-            majoxLogo = content.Load<Texture2D>("majox_logo");
+            backgroundTexture = content.Load<Texture2D>("Images/Rect_Texture");
+            majoxLogo = content.Load<Texture2D>("Images/Majox_Logo");
 
         }
 
@@ -70,7 +70,7 @@ namespace ProjectWizardous
 
             if (gameTime.TotalGameTime.Seconds - curGametime >= Singleton.SPLASH_TIME)
             {
-                SceneManager.AddScreen(new Level01());
+                SceneManager.AddScreen(new MenuScene());
                 SceneManager.RemoveScreen(this);
             }
 

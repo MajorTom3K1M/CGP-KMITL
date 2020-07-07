@@ -8,24 +8,28 @@ using System.Collections.Generic;
 
 namespace ProjectWizardous
 {
-    public class InputComponent
+    public class InputComponent : Component
     {
+        public int MaxTurnSpeed = 5;
+        public int TurnSpeed;
+
         public Dictionary<string, Keys> InputList;
 
-        public InputComponent(Game currentScene)
+        public InputComponent(GameScene currentScene)
         {
             InputList = new Dictionary<string, Keys>();
+            TurnSpeed = MaxTurnSpeed;
         }
 
-        public virtual void Update(GameTime gameTime, List<GameObject> gameObjects, GameObject parent) { }
+        public override void Update(GameTime gameTime, List<GameObject> gameObjects, GameObject parent) { }
 
-        public virtual void Reset() { }
+        public override void Reset() { }
 
         public virtual void ChangeMappingKey(string Key, Keys newInput)
         {
             InputList[Key] = newInput;
         }
 
-        public virtual void ReceiveMessage(int message) { }
+        public override void ReceiveMessage(int message, Component sender) { }
     }
 }
