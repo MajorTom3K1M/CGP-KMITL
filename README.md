@@ -54,3 +54,17 @@ your own story.
 ### Theme
 Based on an Indie game, LIMBO. This game uses Colorless Theme (the Grayscale
 color pallet) for bring out the mood of unknown, blank (moodless) and a feeling of isolated.
+
+### Gameplay
+
+#### Gameplay State
+Separate into 2 states which are Normal State and Active State
+- Normal State, likes Normal Action, 2D Movement, Interact with an object
+- Active State, likes Combat Mode, Turn State, AI
+
+#### Game Level
+In Alpha Version, 2 levels are available to play which are these following...
+- Level01: Chapter 1 / There’s no place like home...
+In this level, player will learn from basic gameplay like movement and basic combat
+system to some advance system like boss battle
+- Level02: Chapter 2 / I defy you, stars.
