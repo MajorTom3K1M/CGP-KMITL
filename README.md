@@ -2,6 +2,9 @@
  Computer Game Programing Course KMITL
  
 # 1. GEMyth (PuzzleBobble) 
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex1.png">
+</p>
 
 ### Game Platform
 - Desktop (PC)
@@ -20,3 +23,48 @@ Gem Mines. Player will play as a Gem Miner who has to collect many gem as much a
 ### Unique Selling Point
 Many hot-headed mode like Blinding Mode, Hardcore and especially the Nightmare Mode. Some Machanics like Bomb Gem 
 and a few of Customable Option for a variety of game.
+
+### In Game Screenshot
+<p align="center">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex3.png">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex2.png">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex4.png">
+</p>
+
+# 2. Wizardous
+
+### Game Platform
+- Desktop (PC)
+
+### Target Audience
+- Any genders but non-cultism
+
+### Game Overview
+ This game mainly bases on 2-D Catapult Game with additional mechanics for
+example Side-Scrolling, Turn Based. 
+<br/>
+Player will be played as a Wizard with an objective of this following list
+<br/>
+- To traverse on each level
+- To eliminate all enemy and obstacle on each level<br/>
+
+Also, the game will show a hint or any action as a Storytelling for player to improvise
+your own story.
+
+### Theme
+Based on an Indie game, LIMBO. This game uses Colorless Theme (the Grayscale
+color pallet) for bring out the mood of unknown, blank (moodless) and a feeling of isolated.
+
+### Gameplay
+
+#### Gameplay State
+Separate into 2 states which are Normal State and Active State
+- Normal State, likes Normal Action, 2D Movement, Interact with an object
+- Active State, likes Combat Mode, Turn State, AI
+
+#### Game Level
+In Alpha Version, 2 levels are available to play which are these following...
+- Level01: Chapter 1 / There’s no place like home...
+In this level, player will learn from basic gameplay like movement and basic combat
+system to some advance system like boss battle
+- Level02: Chapter 2 / I defy you, stars.
