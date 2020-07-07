@@ -30,3 +30,27 @@ and a few of Customable Option for a variety of game.
   <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex2.png">
   <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex4.png">
 </p>
+
+# 2. Wizardous
+
+### Game Platform
+- Desktop (PC)
+
+### Target Audience
+- Any genders but non-cultism
+
+### Game Overview
+ This game mainly bases on 2-D Catapult Game with additional mechanics for
+example Side-Scrolling, Turn Based. 
+<br/>
+Player will be played as a Wizard with an objective of this following list
+<br/>
+- To traverse on each level
+- To eliminate all enemy and obstacle on each level<br/>
+
+Also, the game will show a hint or any action as a Storytelling for player to improvise
+your own story.
+
+### Theme
+Based on an Indie game, LIMBO. This game uses Colorless Theme (the Grayscale
+color pallet) for bring out the mood of unknown, blank (moodless) and a feeling of isolated.
