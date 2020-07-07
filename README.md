@@ -81,4 +81,11 @@ In Alpha Version, 2 levels are available to play which are these following...
 - Level01: Chapter 1 / There’s no place like home...
 In this level, player will learn from basic gameplay like movement and basic combat
 system to some advance system like boss battle
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex6.png">
+</p>
+
 - Level02: Chapter 2 / I defy you, stars.
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex7.png">
+</p>
