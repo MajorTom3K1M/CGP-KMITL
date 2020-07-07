@@ -32,6 +32,9 @@ and a few of Customable Option for a variety of game.
 </p>
 
 # 2. Wizardous
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex3.png">
+</p>
 
 ### Game Platform
 - Desktop (PC)
@@ -56,11 +59,22 @@ Based on an Indie game, LIMBO. This game uses Colorless Theme (the Grayscale
 color pallet) for bring out the mood of unknown, blank (moodless) and a feeling of isolated.
 
 ### Gameplay
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex1.png">
+</p>
+<p align="center">State Machine for Gameplay</p>
 
 #### Gameplay State
 Separate into 2 states which are Normal State and Active State
 - Normal State, likes Normal Action, 2D Movement, Interact with an object
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex4.png">
+</p>
+
 - Active State, likes Combat Mode, Turn State, AI
+<p align="center">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/Wizardous-ex5.png">
+</p>
 
 #### Game Level
 In Alpha Version, 2 levels are available to play which are these following...
