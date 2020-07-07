@@ -1,7 +1,7 @@
 # CGP-KMITL
  Computer Game Programing Course KMITL
  
-# GEMyth (PuzzleBubble) 
+# 1. GEMyth (PuzzleBubble) 
 
 ### Game Platform
 - Desktop (PC)
