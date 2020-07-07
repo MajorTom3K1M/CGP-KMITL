@@ -2,6 +2,9 @@
  Computer Game Programing Course KMITL
  
 # 1. GEMyth (PuzzleBobble) 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex1.png">
+</p>
 
 ### Game Platform
 - Desktop (PC)
