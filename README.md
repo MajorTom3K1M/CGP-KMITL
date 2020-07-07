@@ -3,7 +3,7 @@
  
 # 1. GEMyth (PuzzleBobble) 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex1.png">
+  <img width="500" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex1.png">
 </p>
 
 ### Game Platform
@@ -23,3 +23,10 @@ Gem Mines. Player will play as a Gem Miner who has to collect many gem as much a
 ### Unique Selling Point
 Many hot-headed mode like Blinding Mode, Hardcore and especially the Nightmare Mode. Some Machanics like Bomb Gem 
 and a few of Customable Option for a variety of game.
+
+### In Game Screenshot
+<p align="center">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex3.png">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex2.png">
+  <img width="250" src="https://raw.githubusercontent.com/MajorTom3K1M/CGP-KMITL/master/example/GEMyth-ex4.png">
+</p>
